@@ -18,20 +18,41 @@ use App\Http\Controllers\Api\HomeUserController;
 use App\Http\Controllers\Api\AutenticacionController;
 use App\Http\Controllers\Api\ErrorHandlerController;
 
-Route::apiResource('recordatorios', RecordatorioController::class)->except(['create', 'edit']);
-Route::apiResource('sucursales', SucursalController::class)->except(['create', 'edit']);
-Route::apiResource('usuarios', UsuarioController::class)->except(['create', 'edit']);
-Route::apiResource('categorias', CategoriaController::class)->except(['create', 'edit']);
-Route::apiResource('especialidades', EspecialidadController::class)->except(['create', 'edit']);
-Route::apiResource('agendamientos', AgendamientoController::class)->except(['create', 'edit']);
-Route::apiResource('ordenes', OrdenController::class)->except(['create', 'edit']);
-Route::apiResource('promociones', PromocionController::class)->except(['create', 'edit']);
-Route::apiResource('reseñas', ReseñaController::class)->except(['create', 'edit']);
-Route::apiResource('servicios', ServicioController::class)->except(['create', 'edit']);
-Route::apiResource('productos', ProductoController::class)->except(['create', 'edit']);
+// Rutas públicas
+Route::post('/register', [AutenticacionController::class, 'register']);
+Route::post('/login', [AutenticacionController::class, 'login']);
 
-Route::apiResource('pagos', PagoController::class)->except(['create', 'edit']);
-Route::apiResource('admin', AdminController::class)->except(['create', 'edit']);
-Route::apiResource('home-users', HomeUserController::class)->except(['create', 'edit']);
-Route::apiResource('autenticacion', AutenticacionController::class)->except(['create', 'edit']);
-Route::apiResource('error-handler', ErrorHandlerController::class)->except(['create', 'edit']);
+// Rutas protegidas por JWT
+Route::middleware('auth:api')->group(function () {
+    Route::post('/logout', [AutenticacionController::class, 'logout']);
+    Route::get('/user', [AutenticacionController::class, 'user']);
+
+    // Solo admin y superadmin
+    Route::middleware('role:admin,superadmin')->group(function () {
+        Route::apiResource('usuarios', UsuarioController::class)->except(['create', 'edit']);
+        Route::apiResource('sucursales', SucursalController::class)->except(['create', 'edit']);
+        Route::apiResource('categorias', CategoriaController::class)->except(['create', 'edit']);
+        Route::apiResource('especialidades', EspecialidadController::class)->except(['create', 'edit']);
+        Route::apiResource('ordenes', OrdenController::class)->except(['create', 'edit']);
+        Route::apiResource('promociones', PromocionController::class)->except(['create', 'edit']);
+        Route::apiResource('reseñas', ReseñaController::class)->except(['create', 'edit']);
+        Route::apiResource('servicios', ServicioController::class)->except(['create', 'edit']);
+        Route::apiResource('admin', AdminController::class)->except(['create', 'edit']);
+        Route::apiResource('home-users', HomeUserController::class)->except(['create', 'edit']);
+    });
+
+    // Solo personal y admin/superadmin
+    Route::middleware('role:personal,admin,superadmin')->group(function () {
+        Route::apiResource('agendamientos', AgendamientoController::class)->except(['create', 'edit']);
+    });
+
+    // Solo cliente
+    Route::middleware('role:cliente')->group(function () {
+        // Rutas específicas para clientes
+    });
+
+    // Rutas accesibles para cualquier usuario autenticado
+    Route::apiResource('productos', ProductoController::class)->except(['create', 'edit']);
+    Route::apiResource('pagos', PagoController::class)->except(['create', 'edit']);
+    Route::apiResource('error-handler', ErrorHandlerController::class)->except(['create', 'edit']);
+});
