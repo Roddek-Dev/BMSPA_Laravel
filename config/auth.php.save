@@ -1,4 +1,4 @@
-<?php
+q?php
 
 return [
 
@@ -40,10 +40,6 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'api' => [
-            'driver' => 'jwt',
-            'provider' => 'users', // o el provider que uses para tus usuarios
-        ],
     ],
 
     /*
@@ -66,7 +62,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Client\usuarios\infrastructure\Persistence\Eloquent\UsuarioModel::class,
+            'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
         // 'users' => [
