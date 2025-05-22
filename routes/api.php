@@ -1,6 +1,5 @@
 <?php
 
-Route::prefix('usuario_usuario')->group(base_path('src/usuario/usuario/infrastructure/routes/api.php'));
 
 Route::prefix('Admin_recordatorios')->group(base_path('src/Admin/recordatorios/infrastructure/routes/api.php'));
 
