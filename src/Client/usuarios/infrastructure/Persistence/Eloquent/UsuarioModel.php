@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Client\usuarios\infrastructure\Persistence\Eloquent;
+namespace Src\Client\usuarios\infrastructure\Persistence\Eloquent;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable; // Importar la clase base Authenticatable
+use Tymon\JWTAuth\Contracts\JWTSubject; // Importar si usas tymon/jwt-auth
 
-class UsuarioModel extends Model
+// Asegúrate que tu clase herede de Authenticatable e implemente JWTSubject si es necesario
+class UsuarioModel extends Authenticatable implements JWTSubject
 {
-    use HasFactory;
+    use HasFactory; // Puedes mantener esto si usas factories con este modelo
 
     protected $table = 'usuarios';
 
@@ -34,4 +36,24 @@ class UsuarioModel extends Model
         'musica_preferencia_navegacion_id' => 'integer',
         'sucursal_preferida_id' => 'integer'
     ];
-} 
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey(); // Devuelve la clave primaria del modelo
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return []; // Puedes añadir claims personalizados aquí si los necesitas
+    }
+}

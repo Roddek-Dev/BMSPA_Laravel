@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\usuarios\application\Auth\Command;
+namespace Src\Client\usuarios\application\Auth\Command;
 
 final class LoginUsuarioCommand
 {

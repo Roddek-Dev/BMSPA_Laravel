@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Client\usuarios\application\Auth\Handler;
+namespace Src\Client\usuarios\application\Auth\Handler;
 
-use App\Client\usuarios\application\Auth\Command\RegisterUsuarioCommand;
-use App\Client\usuarios\application\Auth\DTO\RegisteredUsuarioData;
-use App\Client\usuarios\domain\Entities\Usuario;
-use App\Client\usuarios\domain\Repositories\UsuarioRepositoryInterface;
-use App\Client\usuarios\domain\Services\PasswordHasherInterface;
-use App\Client\usuarios\domain\ValueObjects\EmailUsuario;
-use App\Client\usuarios\domain\ValueObjects\NombreUsuario;
-use App\Client\usuarios\domain\ValueObjects\PasswordHashed;
-use App\Client\usuarios\domain\ValueObjects\UsuarioId;
+use Src\Client\usuarios\application\Auth\Command\RegisterUsuarioCommand;
+use Src\Client\usuarios\application\Auth\DTO\RegisteredUsuarioData;
+use Src\Client\usuarios\domain\Entities\Usuario;
+use Src\Client\usuarios\domain\Repositories\UsuarioRepositoryInterface;
+use Src\Client\usuarios\domain\Services\PasswordHasherInterface;
+use Src\Client\usuarios\domain\ValueObjects\EmailUsuario;
+use Src\Client\usuarios\domain\ValueObjects\NombreUsuario;
+use Src\Client\usuarios\domain\ValueObjects\PasswordHashed;
+use Src\Client\usuarios\domain\ValueObjects\UsuarioId;
 
 final class RegisterUsuarioHandler
 {
@@ -20,29 +20,33 @@ final class RegisterUsuarioHandler
         private UsuarioRepositoryInterface $repository,
         private PasswordHasherInterface $passwordHasher
     ) {}
-
     public function handle(RegisterUsuarioCommand $command): RegisteredUsuarioData
     {
         $email = new EmailUsuario($command->email());
-        
+
         if ($this->repository->exists($email)) {
             throw new \DomainException('El email ya está registrado');
         }
 
+        // La entidad Usuario ya recibe la contraseña hasheada
+        $hashedPassword = $this->passwordHasher->hash($command->password());
+
         $usuario = new Usuario(
-            new UsuarioId(0), // El ID será asignado por la base de datos
+            new UsuarioId(0), // El ID será asignado por la BD, y actualizado por el repo
             new NombreUsuario($command->nombre()),
             $email,
-            new PasswordHashed($this->passwordHasher->hash($command->password())),
+            new PasswordHashed($hashedPassword), // Pasar el password ya hasheado
             $command->telefono()
+            // Los demás campos tomarán sus valores por defecto del constructor de Usuario
         );
 
-        $this->repository->save($usuario);
+        // $this->repository->save($usuario); // Antes
+        $persistedUsuario = $this->repository->save($usuario); // DESPUÉS: Capturar la entidad devuelta
 
         return new RegisteredUsuarioData(
-            $usuario->id()->value(),
-            $usuario->nombre()->value(),
-            $usuario->email()->value()
+            $persistedUsuario->id()->value(), // Ahora tendrá el ID correcto de la BD
+            $persistedUsuario->nombre()->value(),
+            $persistedUsuario->email()->value()
         );
     }
 } 

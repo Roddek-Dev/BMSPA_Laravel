@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Client\usuarios\domain\Entities;
+namespace Src\Client\usuarios\domain\Entities;
 
-use App\Client\usuarios\domain\ValueObjects\UsuarioId;
-use App\Client\usuarios\domain\ValueObjects\NombreUsuario;
-use App\Client\usuarios\domain\ValueObjects\EmailUsuario;
-use App\Client\usuarios\domain\ValueObjects\PasswordHashed;
+use Src\Client\usuarios\domain\ValueObjects\UsuarioId;
+use Src\Client\usuarios\domain\ValueObjects\NombreUsuario;
+use Src\Client\usuarios\domain\ValueObjects\EmailUsuario;
+use Src\Client\usuarios\domain\ValueObjects\PasswordHashed;
 
 class Usuario
 {

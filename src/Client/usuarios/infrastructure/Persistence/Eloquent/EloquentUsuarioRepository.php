@@ -2,25 +2,28 @@
 
 declare(strict_types=1);
 
-namespace App\Client\usuarios\infrastructure\Persistence\Eloquent;
+namespace Src\Client\usuarios\infrastructure\Persistence\Eloquent;
 
-use App\Client\usuarios\domain\Entities\Usuario;
-use App\Client\usuarios\domain\Repositories\UsuarioRepositoryInterface;
-use App\Client\usuarios\domain\ValueObjects\EmailUsuario;
-use App\Client\usuarios\domain\ValueObjects\UsuarioId;
-use App\Client\usuarios\domain\ValueObjects\NombreUsuario;
-use App\Client\usuarios\domain\ValueObjects\PasswordHashed;
+use Src\Client\usuarios\domain\Entities\Usuario;
+use Src\Client\usuarios\domain\Repositories\UsuarioRepositoryInterface;
+use Src\Client\usuarios\domain\ValueObjects\EmailUsuario;
+use Src\Client\usuarios\domain\ValueObjects\UsuarioId;
+use Src\Client\usuarios\domain\ValueObjects\NombreUsuario;
+use Src\Client\usuarios\domain\ValueObjects\PasswordHashed;
 
 class EloquentUsuarioRepository implements UsuarioRepositoryInterface
 {
     public function __construct(private UsuarioModel $model) {}
 
-    public function save(Usuario $usuario): void
+    public function save(Usuario $usuario): Usuario // Implementar el tipo de retorno
     {
-        $this->model->create([
+        // Tu lógica actual de `create` ya es buena, pero ahora la usamos para crear el modelo
+        // y luego lo convertimos de nuevo a la entidad para devolverla.
+        // Asumimos que la entidad $usuario ya tiene el password hasheado.
+        $model = $this->model->create([
             'nombre' => $usuario->nombre()->value(),
             'email' => $usuario->email()->value(),
-            'password' => $usuario->password()->value(),
+            'password' => $usuario->password()->value(), // La entidad debe tenerlo hasheado
             'telefono' => $usuario->telefono(),
             'rol' => $usuario->rol(),
             'activo' => $usuario->activo(),
@@ -28,6 +31,9 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
             'musica_preferencia_navegacion_id' => $usuario->musicaPreferenciaNavegacionId(),
             'sucursal_preferida_id' => $usuario->sucursalPreferidaId()
         ]);
+
+        // Convertir el modelo Eloquent (que ahora tiene ID) de nuevo a tu entidad de dominio
+        return $this->toEntity($model);
     }
 
     public function findById(UsuarioId $id): ?Usuario

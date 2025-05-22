@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\usuarios\domain\Exception;
+namespace Src\Client\usuarios\domain\Exception;
 
 class UsuarioNotFoundException extends \DomainException
 {

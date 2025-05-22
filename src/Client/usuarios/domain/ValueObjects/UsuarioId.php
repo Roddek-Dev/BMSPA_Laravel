@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\usuarios\domain\ValueObjects;
+namespace Src\Client\usuarios\domain\ValueObjects;
 
 class UsuarioId
 {
@@ -10,7 +10,15 @@ class UsuarioId
 
     public function __construct(int $value)
     {
+        $this->validate($value);
         $this->value = $value;
+    }
+
+    private function validate(int $value): void
+    {
+        if ($value <= 0) {
+            throw new \InvalidArgumentException('El ID debe ser un número positivo');
+        }
     }
 
     public function value(): int

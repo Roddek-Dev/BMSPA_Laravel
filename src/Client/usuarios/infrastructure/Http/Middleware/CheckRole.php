@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\usuarios\infrastructure\Http\Middleware;
+namespace Src\Client\usuarios\infrastructure\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;

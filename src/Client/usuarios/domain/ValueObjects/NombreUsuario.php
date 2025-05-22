@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\usuarios\domain\ValueObjects;
+namespace Src\Client\usuarios\domain\ValueObjects;
 
 use InvalidArgumentException;
 
@@ -12,21 +12,21 @@ class NombreUsuario
 
     public function __construct(string $value)
     {
-        $this->ensureIsValidNombre($value);
+        $this->validate($value);
         $this->value = $value;
     }
 
-    private function ensureIsValidNombre(string $nombre): void
+    private function validate(string $value): void
     {
-        if (empty(trim($nombre))) {
-            throw new InvalidArgumentException('El nombre no puede estar vacío');
+        if (empty($value)) {
+            throw new \InvalidArgumentException('El nombre no puede estar vacío');
         }
 
-        if (strlen($nombre) > 255) {
-            throw new InvalidArgumentException('El nombre no puede tener más de 255 caracteres');
+        if (strlen($value) > 255) {
+            throw new \InvalidArgumentException('El nombre no puede tener más de 255 caracteres');
         }
 
-        if (!preg_match('/^[\p{L}\s]+$/u', $nombre)) {
+        if (!preg_match('/^[\p{L}\s]+$/u', $value)) {
             throw new InvalidArgumentException('El nombre solo puede contener letras y espacios');
         }
     }

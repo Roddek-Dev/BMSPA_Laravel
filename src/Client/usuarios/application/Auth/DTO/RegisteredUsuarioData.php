@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\usuarios\application\Auth\DTO;
+namespace Src\Client\usuarios\application\Auth\DTO;
 
 final class RegisteredUsuarioData
 {

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Client\usuarios\infrastructure\Http\Controllers;
+namespace Src\Client\usuarios\infrastructure\Http\Controllers;
 
-use App\Client\usuarios\application\Auth\Command\RegisterUsuarioCommand;
-use App\Client\usuarios\application\Auth\Command\LoginUsuarioCommand;
-use App\Client\usuarios\application\Auth\Handler\RegisterUsuarioHandler;
-use App\Client\usuarios\application\Auth\Handler\LoginUsuarioHandler;
-use App\Client\usuarios\infrastructure\Http\Requests\RegisterRequest;
-use App\Client\usuarios\infrastructure\Http\Requests\LoginRequest;
-use App\Client\usuarios\domain\Exception\UsuarioNotFoundException;
-use App\Client\usuarios\domain\Exception\InvalidCredentialsException;
+use Src\Client\usuarios\application\Auth\Command\RegisterUsuarioCommand;
+use Src\Client\usuarios\application\Auth\Command\LoginUsuarioCommand;
+use Src\Client\usuarios\application\Auth\Handler\RegisterUsuarioHandler;
+use Src\Client\usuarios\application\Auth\Handler\LoginUsuarioHandler;
+use Src\Client\usuarios\infrastructure\Http\Requests\RegisterRequest;
+use Src\Client\usuarios\infrastructure\Http\Requests\LoginRequest;
+use Src\Client\usuarios\domain\Exception\UsuarioNotFoundException;
+use Src\Client\usuarios\domain\Exception\InvalidCredentialsException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 

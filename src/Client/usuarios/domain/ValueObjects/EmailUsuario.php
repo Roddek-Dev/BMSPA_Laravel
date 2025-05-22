@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\usuarios\domain\ValueObjects;
+namespace Src\Client\usuarios\domain\ValueObjects;
 
 use InvalidArgumentException;
 
@@ -12,16 +12,22 @@ class EmailUsuario
 
     public function __construct(string $value)
     {
-        $this->ensureIsValidEmail($value);
+        $this->validate($value);
         $this->value = $value;
     }
 
-    private function ensureIsValidEmail(string $email): void
+    private function validate(string $value): void
     {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException(
-                sprintf('<%s> no es un email válido', $email)
-            );
+        if (empty($value)) {
+            throw new \InvalidArgumentException('El email no puede estar vacío');
+        }
+
+        if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+            throw new \InvalidArgumentException('El email no es válido');
+        }
+
+        if (strlen($value) > 255) {
+            throw new \InvalidArgumentException('El email no puede tener más de 255 caracteres');
         }
     }
 

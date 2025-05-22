@@ -1,8 +1,7 @@
 <?php
 
 declare(strict_types=1);
-
-namespace App\Client\usuarios\domain\ValueObjects;
+namespace Src\Client\usuarios\domain\ValueObjects;
 
 final class RolUsuario
 {

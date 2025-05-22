@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Client\usuarios\infrastructure\Http\Controllers\AuthController;
+use Src\Client\usuarios\infrastructure\Http\Controllers\AuthController;
 
 // Rutas de autenticación
 Route::prefix('auth')->group(function () {
@@ -29,11 +29,3 @@ Route::prefix('auth')->group(function () {
         });
     });
 });
-
-//use Src\Client\usuarios\infrastructure\controllers\ExampleGETController;
-
-// Simpele route example
-// Route::get('/', [ExampleGETController::class, 'index']);
-
-//Authenticathed route example
-// Route::middleware(['auth:sanctum','activitylog'])->get('/', [ExampleGETController::class, 'index']);
