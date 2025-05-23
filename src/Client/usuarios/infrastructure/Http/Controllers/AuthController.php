@@ -12,6 +12,7 @@ use Src\Client\usuarios\infrastructure\Http\Requests\RegisterRequest;
 use Src\Client\usuarios\infrastructure\Http\Requests\LoginRequest;
 use Src\Client\usuarios\domain\Exception\UsuarioNotFoundException;
 use Src\Client\usuarios\domain\Exception\InvalidCredentialsException;
+use Illuminate\Support\Facades\Log; // Añade esto al principio
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
@@ -21,9 +22,9 @@ class AuthController extends Controller
         private RegisterUsuarioHandler $registerHandler,
         private LoginUsuarioHandler $loginHandler
     ) {}
-
     public function register(RegisterRequest $request): JsonResponse
     {
+        Log::info('Register endpoint hit.', $request->all()); // Registra los datos de la solicitud
         try {
             $command = new RegisterUsuarioCommand(
                 $request->input('nombre'),
@@ -31,24 +32,40 @@ class AuthController extends Controller
                 $request->input('password'),
                 $request->input('telefono')
             );
-
+    
+            Log::info('RegisterUsuarioCommand created.', (array) $command);
+    
             $result = $this->registerHandler->handle($command);
-
+    
+            Log::info('User registration successful in handler.', $result->toArray());
+    
             return response()->json([
                 'message' => 'Usuario registrado exitosamente',
                 'data' => $result->toArray()
-            ], 201);
-        } catch (\DomainException $e) {
+            ], 201); // El registro exitoso debería ser 201
+    
+        } catch (\Src\Client\usuarios\domain\Exception\UsuarioAlreadyExistsException $e) { // O tu excepción de dominio específica para usuario existente
+            Log::warning('Registration failed: UsuarioAlreadyExistsException - ' . $e->getMessage(), ['email' => $request->input('email')]);
             return response()->json([
                 'message' => $e->getMessage()
-            ], 400);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error al registrar el usuario'
-            ], 500);
+            ], 409); // 409 Conflict también es común para "ya existe"
+        } catch (\DomainException $e) { //
+            Log::warning('Registration failed: DomainException - ' . $e->getMessage(), ['exception_trace' => $e->getTraceAsString()]);
+            return response()->json([ //
+                'message' => $e->getMessage() //
+            ], 400); //
+        } catch (\Throwable $e) { // Captura Throwable para más cobertura de errores
+            Log::error('Critical error during registration: ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([ //
+                'message' => 'Error al registrar el usuario: ' . $e->getMessage() // Incluye el mensaje de error para depuración
+            ], 500); //
         }
     }
-
+    
     public function login(LoginRequest $request): JsonResponse
     {
         try {
@@ -72,7 +89,7 @@ class AuthController extends Controller
                 'message' => 'Error al iniciar sesión'
             ], 500);
         }
-    }
+    }   
 
     public function logout(): JsonResponse
     {

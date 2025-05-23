@@ -11,7 +11,8 @@ use Src\Client\usuarios\domain\ValueObjects\PasswordHashed;
 
 class Usuario
 {
-    private UsuarioId $id;
+    private ?UsuarioId $id; // Hazlo nulable
+
     private NombreUsuario $nombre;
     private EmailUsuario $email;
     private PasswordHashed $password;
@@ -23,7 +24,7 @@ class Usuario
     private ?int $sucursal_preferida_id;
 
     public function __construct(
-        UsuarioId $id,
+        ?UsuarioId $id, // Acepta null
         NombreUsuario $nombre,
         EmailUsuario $email,
         PasswordHashed $password,
@@ -46,9 +47,9 @@ class Usuario
         $this->sucursal_preferida_id = $sucursal_preferida_id;
     }
 
-    public function id(): UsuarioId
+    public function id(): ?UsuarioId
     {
-        return $this->id;
+        return $this->id; //
     }
 
     public function nombre(): NombreUsuario

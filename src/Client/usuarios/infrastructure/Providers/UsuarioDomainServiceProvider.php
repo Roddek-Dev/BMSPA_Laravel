@@ -11,6 +11,7 @@ use Src\Client\usuarios\infrastructure\Services\LaravelPasswordHasher;
 // o si prefieres la versión de Bcrypt directamente (aunque LaravelPasswordHasher ya usa bcrypt por defecto):
 // use App\client\usuarios\domain\Services\BcryptPasswordHasher;
 
+
 class UsuarioDomainServiceProvider extends ServiceProvider
 {
     public function register(): void
@@ -28,6 +29,6 @@ class UsuarioDomainServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        //
+        
     }
 }

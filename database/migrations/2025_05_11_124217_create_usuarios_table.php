@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('direccion', 255)->nullable()->comment('Dirección general del cliente si aplica');
             $table->string('telefono', 25)->nullable()->unique();
             $table->string('rol', 50)->default('CLIENTE')->comment('Ej: CLIENTE, EMPLEADO. Si es EMPLEADO, tiene un registro en la tabla `personal`');
-            $table->string('estado', 50)->default('ACTIVO')->comment('Ej: ACTIVO, INACTIVO, PENDIENTE_VERIFICACION');
+            $table->boolean('activo')->default(true); // Añade esta línea
+            // $table->string('estado', 50)->default('ACTIVO')->comment('Ej: ACTIVO, INACTIVO, PENDIENTE_VERIFICACION');
             $table->foreignId('musica_preferencia_navegacion_id')->nullable()->constrained('musica_preferencias_navegacion')->onDelete('set null');
             $table->foreignId('sucursal_preferida_id')->nullable()->constrained('sucursales')->onDelete('set null')->comment('Sucursal preferida por el usuario para visualización rápida');
             $table->rememberToken();

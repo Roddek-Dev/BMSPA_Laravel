@@ -28,23 +28,24 @@ final class RegisterUsuarioHandler
             throw new \DomainException('El email ya está registrado');
         }
 
-        // La entidad Usuario ya recibe la contraseña hasheada
         $hashedPassword = $this->passwordHasher->hash($command->password());
+        
+        try {
+            $usuario = new Usuario(
+                null,
+                new NombreUsuario($command->nombre()),
+                $email,
+                new PasswordHashed($hashedPassword),
+                $command->telefono()
+            );
+        } catch (\InvalidArgumentException $e) {
+            throw $e;
+        }
 
-        $usuario = new Usuario(
-            new UsuarioId(0), // El ID será asignado por la BD, y actualizado por el repo
-            new NombreUsuario($command->nombre()),
-            $email,
-            new PasswordHashed($hashedPassword), // Pasar el password ya hasheado
-            $command->telefono()
-            // Los demás campos tomarán sus valores por defecto del constructor de Usuario
-        );
-
-        // $this->repository->save($usuario); // Antes
-        $persistedUsuario = $this->repository->save($usuario); // DESPUÉS: Capturar la entidad devuelta
+        $persistedUsuario = $this->repository->save($usuario);
 
         return new RegisteredUsuarioData(
-            $persistedUsuario->id()->value(), // Ahora tendrá el ID correcto de la BD
+            $persistedUsuario->id()->value(),
             $persistedUsuario->nombre()->value(),
             $persistedUsuario->email()->value()
         );

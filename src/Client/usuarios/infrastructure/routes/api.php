@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Src\Client\usuarios\infrastructure\Http\Controllers\AuthController;
+use Src\Client\usuarios\infrastructure\Http\Controllers\TestRoleController;
 
 // Rutas de autenticación
 Route::prefix('auth')->group(function () {
@@ -14,18 +15,18 @@ Route::prefix('auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         
         // Rutas para administradores
-        Route::middleware('check.role:ADMIN_GENERAL')->group(function () {
-            // Aquí van las rutas que solo pueden acceder los administradores generales
+        Route::middleware('role:ADMIN_GENERAL')->group(function () {
+            Route::get('/test-admin', [TestRoleController::class, 'testAdmin']);
         });
         
         // Rutas para empleados
-        Route::middleware('check.role:EMPLEADO')->group(function () {
-            // Aquí van las rutas que solo pueden acceder los empleados
+        Route::middleware('role:EMPLEADO')->group(function () {
+            Route::get('/test-empleado', [TestRoleController::class, 'testEmpleado']);
         });
         
         // Rutas para clientes
-        Route::middleware('check.role:CLIENTE')->group(function () {
-            // Aquí van las rutas que solo pueden acceder los clientes
+        Route::middleware('role:CLIENTE')->group(function () {
+            Route::get('/test-cliente', [TestRoleController::class, 'testCliente']);
         });
     });
 });

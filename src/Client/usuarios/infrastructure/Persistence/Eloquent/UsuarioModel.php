@@ -6,8 +6,7 @@ namespace Src\Client\usuarios\infrastructure\Persistence\Eloquent;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable; // Importar la clase base Authenticatable
-use Tymon\JWTAuth\Contracts\JWTSubject; // Importar si usas tymon/jwt-auth
-
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 // Asegúrate que tu clase herede de Authenticatable e implemente JWTSubject si es necesario
 class UsuarioModel extends Authenticatable implements JWTSubject
 {
