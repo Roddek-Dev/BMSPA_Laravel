@@ -1,21 +1,21 @@
 # 🎵 BarberMusic&Spa 💈💇‍♀️✨
 
 <div align="center">
-  <img src="[https://i.imgur.com/your-logo-url-here.png](https://i.imgur.com/your-logo-url-here.png)" alt="Logo de BarberMusic&Spa" width="200"/> 
+  <img src="https://i.imgur.com/your-logo-url-here.png" alt="Logo de BarberMusic&Spa" width="200"/> 
   <p><strong>SPA y Barbería con un Toque Musical 🎶</strong></p>
   
   <p>
-    <a href="[https://github.com/roddek-dev/bmspa_laravel/actions](https://github.com/roddek-dev/bmspa_laravel/actions)"><img src="[https://github.com/laravel/framework/workflows/tests/badge.svg](https://github.com/laravel/framework/workflows/tests/badge.svg)" alt="Build Status"></a>
-    <a href="[https://packagist.org/packages/laravel/framework](https://packagist.org/packages/laravel/framework)"><img src="[https://img.shields.io/packagist/dt/laravel/framework](https://img.shields.io/packagist/dt/laravel/framework)" alt="Total Downloads"></a>
-    <a href="[https://packagist.org/packages/laravel/framework](https://packagist.org/packages/laravel/framework)"><img src="[https://img.shields.io/packagist/v/laravel/framework](https://img.shields.io/packagist/v/laravel/framework)" alt="Latest Stable Version"></a>
-    <a href="[https://packagist.org/packages/laravel/framework](https://packagist.org/packages/laravel/framework)"><img src="[https://img.shields.io/packagist/l/laravel/framework](https://img.shields.io/packagist/l/laravel/framework)" alt="License"></a>
+    <a href="https://github.com/roddek-dev/bmspa_laravel/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+    <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+    <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+    <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
   </p>
   <p>
-    <img src="[https://img.shields.io/badge/Laravel-v12.x-FF2D20?style=flat-square&logo=laravel](https://img.shields.io/badge/Laravel-v12.x-FF2D20?style=flat-square&logo=laravel)" alt="Laravel 12">
-    <img src="[https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat-square&logo=php](https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat-square&logo=php)" alt="PHP 8.2+">
-    <img src="[https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=mysql](https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=mysql)" alt="MySQL 8.0">
-    <img src="[https://img.shields.io/badge/TailwindCSS-3.x-06B6D4?style=flat-square&logo=tailwindcss](https://img.shields.io/badge/TailwindCSS-3.x-06B6D4?style=flat-square&logo=tailwindcss)" alt="TailwindCSS 3.x">
-    <img src="[https://img.shields.io/badge/JWT-Auth-000000?style=flat-square&logo=jsonwebtokens](https://img.shields.io/badge/JWT-Auth-000000?style=flat-square&logo=jsonwebtokens)" alt="JWT Auth">
+    <img src="https://img.shields.io/badge/Laravel-v12.x-FF2D20?style=flat-square&logo=laravel" alt="Laravel 12">
+    <img src="https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat-square&logo=php" alt="PHP 8.2+">
+    <img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=mysql" alt="MySQL 8.0">
+    <img src="https://img.shields.io/badge/TailwindCSS-3.x-06B6D4?style=flat-square&logo=tailwindcss" alt="TailwindCSS 3.x">
+    <img src="https://img.shields.io/badge/JWT-Auth-000000?style=flat-square&logo=jsonwebtokens" alt="JWT Auth">
   </p>
 </div>
 
