@@ -7,10 +7,11 @@ namespace Src\Client\usuarios\infrastructure\Persistence\Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable; // Importar la clase base Authenticatable
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Laravel\Passport\HasApiTokens;
 // Asegúrate que tu clase herede de Authenticatable e implemente JWTSubject si es necesario
 class UsuarioModel extends Authenticatable implements JWTSubject
 {
-    use HasFactory; // Puedes mantener esto si usas factories con este modelo
+    use HasFactory, HasApiTokens; // Puedes mantener esto si usas factories con este modelo
 
     protected $table = 'usuarios';
 
@@ -53,6 +54,10 @@ class UsuarioModel extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims()
     {
-        return []; // Puedes añadir claims personalizados aquí si los necesitas
+        return [
+            'email' => $this->email,
+            'nombre' => $this->nombre,
+            'rol' => $this->rol
+        ];
     }
 }
