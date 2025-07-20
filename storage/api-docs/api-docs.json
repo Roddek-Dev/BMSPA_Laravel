@@ -253,14 +253,14 @@
                 ]
             }
         },
-        "/api/Client_usuarios/auth/test-admin": {
+        "/api/Client_usuarios/auth/test-admin-sucursal": {
             "get": {
                 "tags": [
                     "Roles de Prueba"
                 ],
-                "summary": "Probar acceso con rol de Administrador",
-                "description": "Endpoint para verificar si el usuario autenticado tiene acceso como administrador.",
-                "operationId": "9ebaa1123bcde5814bc56f7f3c703e00",
+                "summary": "Probar acceso con rol de Administrador de Sucursal",
+                "description": "Endpoint para verificar si el usuario autenticado tiene acceso como administrador de sucursal.",
+                "operationId": "57909ae926f1a46fe4ecc6f3cf6e1a55",
                 "responses": {
                     "200": {
                         "description": "Acceso permitido.",
@@ -270,7 +270,49 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Acceso permitido para administradores"
+                                            "example": "Acceso permitido para administradores de sucursal"
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado."
+                    },
+                    "403": {
+                        "description": "Acceso denegado (Forbidden)."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Client_usuarios/auth/test-gerente": {
+            "get": {
+                "tags": [
+                    "Roles de Prueba"
+                ],
+                "summary": "Probar acceso con rol de Gerente",
+                "description": "Endpoint para verificar si el usuario autenticado tiene acceso como gerente.",
+                "operationId": "d97ce0ffe9ec222a9516a4450d43ddda",
+                "responses": {
+                    "200": {
+                        "description": "Acceso permitido.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Acceso permitido para gerentes"
                                         },
                                         "user": {
                                             "type": "object"

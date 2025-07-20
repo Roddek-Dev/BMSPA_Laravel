@@ -38,7 +38,11 @@ namespace App\Http\Controllers;
  * )
  * 
  * @OA\PathItem(
- * path="/api/Client_usuarios/auth/test-admin"
+ * path="/api/Client_usuarios/auth/test-admin-sucursal"
+ * )
+ * 
+ * @OA\PathItem(
+ * path="/api/Client_usuarios/auth/test-gerente"
  * )
  * 
  * @OA\PathItem(
