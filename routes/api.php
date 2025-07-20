@@ -7,8 +7,6 @@ Route::prefix('Admin_personal')->group(base_path('src/Admin/personal/infrastruct
 
 Route::prefix('Admin_sucursales')->group(base_path('src/Admin/sucursales/infrastructure/routes/api.php'));
 
-Route::prefix('Admin_recordatorios')->group(base_path('src/Admin/recordatorios/infrastructure/routes/api.php'));
-
 Route::prefix('Admin_promociones')->group(base_path('src/Admin/promociones/infrastructure/routes/api.php'));
 
 Route::prefix('Admin_categorias')->group(base_path('src/Admin/categorias/infrastructure/routes/api.php'));

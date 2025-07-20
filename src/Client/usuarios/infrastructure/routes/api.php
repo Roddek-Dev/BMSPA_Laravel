@@ -22,17 +22,17 @@ Route::prefix('auth')->group(function () {
         Route::get('/oauth/me', [OAuthController::class, 'me']);
         
         // Rutas para administradores
-        Route::middleware('check.role:ADMIN_GENERAL')->group(function () {
+        Route::middleware('role:ADMIN_GENERAL')->group(function () {
             Route::get('/test-admin', [TestRoleController::class, 'testAdmin']);
         });
         
         // Rutas para empleados
-        Route::middleware('check.role:EMPLEADO')->group(function () {
+        Route::middleware('role:EMPLEADO')->group(function () {
             Route::get('/test-empleado', [TestRoleController::class, 'testEmpleado']);
         });
         
         // Rutas para clientes
-        Route::middleware('check.role:CLIENTE')->group(function () {
+        Route::middleware('role:CLIENTE')->group(function () {
             Route::get('/test-cliente', [TestRoleController::class, 'testCliente']);
         });
     });

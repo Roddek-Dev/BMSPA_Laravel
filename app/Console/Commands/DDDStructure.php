@@ -75,7 +75,8 @@ class DDDStructure extends Command
         $this->info('Routes entry point added in ' . $uri . 'infrastructure/routes/api.php' );
 
         // local api.php added to main api.php
-        $content = "\nRoute::prefix('" . $this->argument('context') . "_" .$this->argument('entity') . "')->group(base_path('src/". $this->argument('context') . "/" .$this->argument('entity') ."/infrastructure/routes/api.php'));\n";
+        $prefix = ucfirst($this->argument('context')) . "_" . $this->argument('entity');
+        $content = "\nRoute::prefix('" . $prefix . "')->group(base_path('src/". $this->argument('context') . "/" .$this->argument('entity') ."/infrastructure/routes/api.php'));\n";
         File::append(base_path('routes/api.php'), $content);
         $this->info('Module routes linked in main routes directory.');
 

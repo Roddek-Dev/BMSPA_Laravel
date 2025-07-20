@@ -6,17 +6,26 @@ namespace Src\Client\usuarios\infrastructure\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\JsonResponse;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, string $role)
     {
-        if (!$request->user() || $request->user()->rol !== $role) {
+        $user = $request->user();
+        
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No autenticado'
+            ], 401);
+        }
+
+        if ($user->rol !== $role) {
             return response()->json([
                 'success' => false,
                 'message' => 'No tienes permiso para acceder a este recurso'
-            ], Response::HTTP_FORBIDDEN);
+            ], 403);
         }
 
         return $next($request);
