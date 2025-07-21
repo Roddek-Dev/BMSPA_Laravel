@@ -253,6 +253,90 @@
                 ]
             }
         },
+        "/api/Client_usuarios/auth/test-cliente": {
+            "get": {
+                "tags": [
+                    "Roles de Prueba"
+                ],
+                "summary": "Probar acceso con rol de Cliente",
+                "description": "Endpoint para verificar si el usuario autenticado tiene acceso como cliente.",
+                "operationId": "8c57945fdc46cee42a2aad3441888446",
+                "responses": {
+                    "200": {
+                        "description": "Acceso permitido.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Acceso permitido para clientes"
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado."
+                    },
+                    "403": {
+                        "description": "Acceso denegado (Forbidden)."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Client_usuarios/auth/test-empleado": {
+            "get": {
+                "tags": [
+                    "Roles de Prueba"
+                ],
+                "summary": "Probar acceso con rol de Empleado",
+                "description": "Endpoint para verificar si el usuario autenticado tiene acceso como empleado.",
+                "operationId": "6c4d3ad7d8c55e7b574f9d3612e4163f",
+                "responses": {
+                    "200": {
+                        "description": "Acceso permitido.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Acceso permitido para empleados"
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado."
+                    },
+                    "403": {
+                        "description": "Acceso denegado (Forbidden)."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Client_usuarios/auth/test-admin-sucursal": {
             "get": {
                 "tags": [
@@ -336,100 +420,15 @@
                     }
                 ]
             }
-        },
-        "/api/Client_usuarios/auth/test-empleado": {
-            "get": {
-                "tags": [
-                    "Roles de Prueba"
-                ],
-                "summary": "Probar acceso con rol de Empleado",
-                "description": "Endpoint para verificar si el usuario autenticado tiene acceso como empleado.",
-                "operationId": "6c4d3ad7d8c55e7b574f9d3612e4163f",
-                "responses": {
-                    "200": {
-                        "description": "Acceso permitido.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Acceso permitido para empleados"
-                                        },
-                                        "user": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "No autenticado."
-                    },
-                    "403": {
-                        "description": "Acceso denegado (Forbidden)."
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/Client_usuarios/auth/test-cliente": {
-            "get": {
-                "tags": [
-                    "Roles de Prueba"
-                ],
-                "summary": "Probar acceso con rol de Cliente",
-                "description": "Endpoint para verificar si el usuario autenticado tiene acceso como cliente.",
-                "operationId": "8c57945fdc46cee42a2aad3441888446",
-                "responses": {
-                    "200": {
-                        "description": "Acceso permitido.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Acceso permitido para clientes"
-                                        },
-                                        "user": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "No autenticado."
-                    },
-                    "403": {
-                        "description": "Acceso denegado (Forbidden)."
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
         }
     },
     "components": {
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
-                "description": "Introduce el token de acceso (JWT o Sanctum) sin la palabra \"Bearer\".",
-                "in": "header",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
+                "description": "Introduce el token de acceso (JWT o Sanctum) sin la palabra 'Bearer'.",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     },
