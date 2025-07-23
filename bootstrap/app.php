@@ -31,4 +31,5 @@ return Application::configure(basePath: dirname(__DIR__))
         // Configuración de excepciones
     })->withProviders([
         Src\Admin\categorias\infrastructure\Providers\CategoriaServiceProvider::class,
+        Src\Admin\especialidades\infrastructure\Providers\EspecialidadServiceProvider::class,
     ])->create();

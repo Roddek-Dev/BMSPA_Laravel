@@ -1,9 +1,8 @@
 <?php
 
-//use Src\Admin\especialidades\infrastructure\controllers\ExampleGETController;
+use Illuminate\Support\Facades\Route;
+use Src\Admin\especialidades\infrastructure\Http\Controllers\EspecialidadController;
 
-// Simpele route example
-// Route::get('/', [ExampleGETController::class, 'index']);
-
-//Authenticathed route example
-// Route::middleware(['auth:sanctum','activitylog'])->get('/', [ExampleGETController::class, 'index']);
+Route::middleware(['auth:api', 'role:GERENTE'])->group(function () {
+    Route::resource('especialidades', EspecialidadController::class);
+});

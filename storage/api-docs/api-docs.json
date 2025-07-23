@@ -292,6 +292,303 @@
                 ]
             }
         },
+        "/api/Admin_especialidades/especialidades": {
+            "get": {
+                "tags": [
+                    "Especialidades"
+                ],
+                "summary": "Obtener todas las especialidades",
+                "operationId": "4833f38034daeedeac2795ff125aded1",
+                "responses": {
+                    "200": {
+                        "description": "Lista de especialidades",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "nombre": {
+                                                "type": "string",
+                                                "example": "Barbería Clásica"
+                                            },
+                                            "descripcion": {
+                                                "type": "string",
+                                                "example": "Cortes de cabello y afeitados tradicionales."
+                                            },
+                                            "activo": {
+                                                "type": "boolean",
+                                                "example": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Especialidades"
+                ],
+                "summary": "Crear una nueva especialidad",
+                "operationId": "27b14ce76a92b765733ff840cccfb4cd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "activo"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Barbería Clásica"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Cortes de cabello y afeitados tradicionales."
+                                    },
+                                    "icono_clave": {
+                                        "type": "string",
+                                        "example": "corte_hombre"
+                                    },
+                                    "activo": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Especialidad creada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Especialidad creada exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Admin_especialidades/especialidades/{id}": {
+            "get": {
+                "tags": [
+                    "Especialidades"
+                ],
+                "summary": "Obtener una especialidad por ID",
+                "operationId": "c08bedcf23cd42cf287243b63f32a7b8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la especialidad",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Especialidad encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "nombre": {
+                                            "type": "string",
+                                            "example": "Barbería Clásica"
+                                        },
+                                        "descripcion": {
+                                            "type": "string",
+                                            "example": "Cortes de cabello y afeitados tradicionales."
+                                        },
+                                        "icono_clave": {
+                                            "type": "string",
+                                            "example": "corte_hombre"
+                                        },
+                                        "activo": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Especialidad no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Especialidades"
+                ],
+                "summary": "Actualizar una especialidad",
+                "operationId": "5b96e3b7dda04113931270c4c25462ec",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la especialidad",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "activo"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Barbería Clásica"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Cortes de cabello y afeitados tradicionales."
+                                    },
+                                    "icono_clave": {
+                                        "type": "string",
+                                        "example": "corte_hombre"
+                                    },
+                                    "activo": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Especialidad actualizada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Especialidad actualizada exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Especialidad no encontrada"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Especialidades"
+                ],
+                "summary": "Eliminar una especialidad",
+                "operationId": "4eaf99c545a7553cdb41fd8272078616",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la especialidad",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Especialidad eliminada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Especialidad eliminada exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Especialidad no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Client_usuarios/auth/register": {
             "post": {
                 "tags": [
@@ -713,6 +1010,10 @@
         {
             "name": "Categorias",
             "description": "Categorias"
+        },
+        {
+            "name": "Especialidades",
+            "description": "Especialidades"
         },
         {
             "name": "Autenticación",

@@ -44,12 +44,17 @@ El sistema tiene 4 roles con una jerarquía clara. El middleware `CheckRole` rea
 #### **Estructura de Archivos y Namespaces**
 -   **Ubicación**: Todos los componentes de infraestructura (Controladores, Modelos Eloquent, Form Requests, etc.) van **DENTRO** de `src/infrastructure/` del módulo correspondiente.
 -   **Namespaces**: Deben reflejar la ruta exacta del archivo. Ejemplo: `Src\Client\reseñas\infrastructure\Http\Controllers\ReseñaController`.
+-   **Nomenclatura Exacta de Archivos**: Verificar siempre la nomenclatura exacta de los archivos (ej. `CategoriaModel.php` vs `Categoria.php`) para evitar errores de "File not found" o referencias incorrectas.
 
 #### **Documentación Swagger (OpenAPI)**
 -   **REGLA CRÍTICA**: Los esquemas deben ser **en línea** dentro de `@OA\JsonContent`. **NO** usar bloques de Schema globales.
+-   **Rutas Completas en `@OA\Path`**: Asegurarse de que el `path` en las anotaciones `@OA\Path` en los controladores incluya el prefijo completo de la ruta definido en `routes/api.php` (ej. `/api/Admin_modulo/recurso`).
 -   **Referencia**: Seguir el patrón del archivo `Src\Client\usuarios\infrastructure\Http\Controllers\AuthController.php`.
 -   **Autenticación**: Usar `security={{"bearerAuth":{}}}`. **NUNCA** usar `sanctum`.
 -   **Configuración `l5-swagger`**: En `config/l5-swagger.php`, la sección `paths.annotations` **DEBE** incluir `base_path('src/')` y `base_path('app')`.
+
+#### **Manejo de Entidades y Repositorios**
+-   **Consistencia de Constructores**: El número y tipo de argumentos en el constructor de las entidades de dominio (`domain/Entities/`) DEBEN coincidir exactamente con los datos pasados desde las implementaciones de los repositorios (`infrastructure/Persistence/`), especialmente al mapear modelos Eloquent a entidades de dominio.
 
 #### **Inyección de Dependencias**
 -   **Propósito**: Resolver interfaces de dominio a implementaciones de infraestructura.
