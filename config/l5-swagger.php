@@ -45,7 +45,7 @@ return [
                  */
                 'annotations' => [
                     base_path('app'),
-                    base_path('src/Client'), // ¡AQUÍ ES DONDE VA!
+                    base_path('src/'),
 
                 ],
             ],

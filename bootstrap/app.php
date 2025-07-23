@@ -29,4 +29,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         // Configuración de excepciones
-    })->create();
+    })->withProviders([
+        Src\Admin\categorias\infrastructure\Providers\CategoriaServiceProvider::class,
+    ])->create();

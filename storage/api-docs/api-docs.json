@@ -15,6 +15,283 @@
         }
     ],
     "paths": {
+        "/api/Admin_categorias/categorias": {
+            "get": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "Obtener todas las categorías",
+                "operationId": "e76e716f3727ad20b35e426b98eb498d",
+                "responses": {
+                    "200": {
+                        "description": "Lista de categorías",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "readOnly": true
+                                            },
+                                            "nombre": {
+                                                "type": "string"
+                                            },
+                                            "descripcion": {
+                                                "type": "string",
+                                                "nullable": true
+                                            },
+                                            "tipo_categoria": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "PRODUCTO",
+                                                    "SERVICIO"
+                                                ]
+                                            },
+                                            "icono_clave": {
+                                                "type": "string",
+                                                "nullable": true
+                                            },
+                                            "activo": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "Crear una nueva categoría",
+                "operationId": "eaf95299e16489a03b2f0f395ae9030c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Cortes de Cabello"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Servicios de corte de cabello para hombres."
+                                    },
+                                    "tipo_categoria": {
+                                        "type": "string",
+                                        "enum": [
+                                            "PRODUCTO",
+                                            "SERVICIO"
+                                        ],
+                                        "example": "SERVICIO"
+                                    },
+                                    "icono_clave": {
+                                        "type": "string",
+                                        "example": "haircut_icon"
+                                    },
+                                    "activo": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Categoría creada"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Admin_categorias/categorias/{id}": {
+            "get": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "Obtener una categoría por ID",
+                "operationId": "6eb09541540263a7f8cfd1ccce750a08",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles de la categoría",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "readOnly": true
+                                        },
+                                        "nombre": {
+                                            "type": "string"
+                                        },
+                                        "descripcion": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "tipo_categoria": {
+                                            "type": "string",
+                                            "enum": [
+                                                "PRODUCTO",
+                                                "SERVICIO"
+                                            ]
+                                        },
+                                        "icono_clave": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "activo": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "Actualizar una categoría",
+                "operationId": "69285bc63f0339572b6f804a57dd1790",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Cortes de Cabello"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Servicios de corte de cabello para hombres."
+                                    },
+                                    "tipo_categoria": {
+                                        "type": "string",
+                                        "enum": [
+                                            "PRODUCTO",
+                                            "SERVICIO"
+                                        ],
+                                        "example": "SERVICIO"
+                                    },
+                                    "icono_clave": {
+                                        "type": "string",
+                                        "example": "haircut_icon"
+                                    },
+                                    "activo": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Categoría actualizada"
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "Eliminar una categoría",
+                "operationId": "0d96c27cebc7e9054e74eb2a626fbb5f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Categoría eliminada"
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Client_usuarios/auth/register": {
             "post": {
                 "tags": [
@@ -433,6 +710,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Categorias",
+            "description": "Categorias"
+        },
         {
             "name": "Autenticación",
             "description": "Autenticación"

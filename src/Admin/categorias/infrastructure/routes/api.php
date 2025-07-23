@@ -1,9 +1,8 @@
 <?php
 
-//use Src\Admin\categorias\infrastructure\controllers\ExampleGETController;
+use Illuminate\Support\Facades\Route;
+use Src\Admin\categorias\infrastructure\Http\Controllers\CategoriaController;
 
-// Simpele route example
-// Route::get('/', [ExampleGETController::class, 'index']);
-
-//Authenticathed route example
-// Route::middleware(['auth:sanctum','activitylog'])->get('/', [ExampleGETController::class, 'index']);
+Route::middleware(['auth:api', 'role:GERENTE'])->group(function () {
+    Route::resource('categorias', CategoriaController::class);
+});
