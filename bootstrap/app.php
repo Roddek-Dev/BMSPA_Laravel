@@ -32,4 +32,5 @@ return Application::configure(basePath: dirname(__DIR__))
     })->withProviders([
         Src\Admin\categorias\infrastructure\Providers\CategoriaServiceProvider::class,
         Src\Admin\especialidades\infrastructure\Providers\EspecialidadServiceProvider::class,
+        Src\Admin\sucursales\infrastructure\Providers\SucursalServiceProvider::class,
     ])->create();

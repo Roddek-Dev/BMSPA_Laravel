@@ -589,6 +589,339 @@
                 ]
             }
         },
+        "/api/Admin_sucursales/sucursales": {
+            "get": {
+                "tags": [
+                    "Sucursales"
+                ],
+                "summary": "Obtener todas las sucursales",
+                "operationId": "aed4b291308fbb2ace30376ed04ebc82",
+                "responses": {
+                    "200": {
+                        "description": "Lista de sucursales",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "nombre": {
+                                                "type": "string",
+                                                "example": "Sucursal Centro"
+                                            },
+                                            "imagen_path": {
+                                                "type": "string",
+                                                "example": "http://example.com/image.jpg",
+                                                "nullable": true
+                                            },
+                                            "telefono_contacto": {
+                                                "type": "string",
+                                                "example": "5512345678",
+                                                "nullable": true
+                                            },
+                                            "email_contacto": {
+                                                "type": "string",
+                                                "example": "centro@example.com",
+                                                "nullable": true
+                                            },
+                                            "link_maps": {
+                                                "type": "string",
+                                                "example": "https://maps.app.goo.gl/example",
+                                                "nullable": true
+                                            },
+                                            "latitud": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 19.4326,
+                                                "nullable": true
+                                            },
+                                            "longitud": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": -99.1332,
+                                                "nullable": true
+                                            },
+                                            "activo": {
+                                                "type": "boolean",
+                                                "example": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Sucursales"
+                ],
+                "summary": "Crear una nueva sucursal",
+                "operationId": "54a8ab656319d8000e698aeac5d4f42a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "activo"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Sucursal Centro"
+                                    },
+                                    "imagen_path": {
+                                        "type": "string",
+                                        "example": "http://example.com/image.jpg",
+                                        "nullable": true
+                                    },
+                                    "telefono_contacto": {
+                                        "type": "string",
+                                        "example": "5512345678",
+                                        "nullable": true
+                                    },
+                                    "email_contacto": {
+                                        "type": "string",
+                                        "example": "centro@example.com",
+                                        "nullable": true
+                                    },
+                                    "link_maps": {
+                                        "type": "string",
+                                        "example": "https://maps.app.goo.gl/example",
+                                        "nullable": true
+                                    },
+                                    "latitud": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 19.4326,
+                                        "nullable": true
+                                    },
+                                    "longitud": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": -99.1332,
+                                        "nullable": true
+                                    },
+                                    "activo": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Sucursal creada exitosamente"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Admin_sucursales/sucursales/{id}": {
+            "get": {
+                "tags": [
+                    "Sucursales"
+                ],
+                "summary": "Obtener una sucursal por ID",
+                "operationId": "d8687dc2aa29577d59a93d9f132fad02",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucursal encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "nombre": {
+                                            "type": "string",
+                                            "example": "Sucursal Centro"
+                                        },
+                                        "imagen_path": {
+                                            "type": "string",
+                                            "example": "http://example.com/image.jpg",
+                                            "nullable": true
+                                        },
+                                        "telefono_contacto": {
+                                            "type": "string",
+                                            "example": "5512345678",
+                                            "nullable": true
+                                        },
+                                        "email_contacto": {
+                                            "type": "string",
+                                            "example": "centro@example.com",
+                                            "nullable": true
+                                        },
+                                        "link_maps": {
+                                            "type": "string",
+                                            "example": "https://maps.app.goo.gl/example",
+                                            "nullable": true
+                                        },
+                                        "latitud": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 19.4326,
+                                            "nullable": true
+                                        },
+                                        "longitud": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": -99.1332,
+                                            "nullable": true
+                                        },
+                                        "activo": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Sucursal no encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Sucursales"
+                ],
+                "summary": "Actualizar una sucursal",
+                "operationId": "6e03bf40998dcbadad55bd3a8e8ee299",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "activo"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Sucursal Centro"
+                                    },
+                                    "imagen_path": {
+                                        "type": "string",
+                                        "example": "http://example.com/image.jpg",
+                                        "nullable": true
+                                    },
+                                    "telefono_contacto": {
+                                        "type": "string",
+                                        "example": "5512345678",
+                                        "nullable": true
+                                    },
+                                    "email_contacto": {
+                                        "type": "string",
+                                        "example": "centro@example.com",
+                                        "nullable": true
+                                    },
+                                    "link_maps": {
+                                        "type": "string",
+                                        "example": "https://maps.app.goo.gl/example",
+                                        "nullable": true
+                                    },
+                                    "latitud": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 19.4326,
+                                        "nullable": true
+                                    },
+                                    "longitud": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": -99.1332,
+                                        "nullable": true
+                                    },
+                                    "activo": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sucursal actualizada exitosamente"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Sucursales"
+                ],
+                "summary": "Eliminar una sucursal",
+                "operationId": "d7627c151d1ee801f90b642603653ed8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Sucursal eliminada exitosamente"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Client_usuarios/auth/register": {
             "post": {
                 "tags": [
@@ -1014,6 +1347,10 @@
         {
             "name": "Especialidades",
             "description": "Especialidades"
+        },
+        {
+            "name": "Sucursales",
+            "description": "Sucursales"
         },
         {
             "name": "Autenticación",
