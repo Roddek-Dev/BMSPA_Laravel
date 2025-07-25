@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 use Src\Client\direcciones\domain\Repositories\DireccionRepository;
 use Src\Client\direcciones\domain\Entities\Direccion;
 use Src\Client\direcciones\infrastructure\Models\DireccionModel;
-use Src\Client\usuarios\infrastructure\Persistence\Eloquent\UsuarioModel;
 
 class EloquentDireccionRepository implements DireccionRepository
 {
@@ -19,10 +18,10 @@ class EloquentDireccionRepository implements DireccionRepository
         return $this->toDomain($model);
     }
 
-    public function findAllByClient(int $clientId): array
+    public function findAllByOwner(string $ownerType, int $ownerId): array
     {
-        return DireccionModel::where('direccionable_id', $clientId)
-            ->where('direccionable_type', UsuarioModel::class)
+        return DireccionModel::where('direccionable_id', $ownerId)
+            ->where('direccionable_type', $ownerType)
             ->get()
             ->map(fn ($model) => $this->toDomain($model))
             ->toArray();
@@ -32,7 +31,7 @@ class EloquentDireccionRepository implements DireccionRepository
     {
         DB::transaction(function () use ($direccion) {
             if ($direccion->es_predeterminada) {
-                $this->resetDefault($direccion->direccionable_id);
+                $this->resetDefault($direccion->direccionable_type, $direccion->direccionable_id);
             }
 
             DireccionModel::create([
@@ -55,7 +54,7 @@ class EloquentDireccionRepository implements DireccionRepository
             $model = DireccionModel::findOrFail($id);
 
             if ($direccion->es_predeterminada) {
-                $this->resetDefault($model->direccionable_id);
+                $this->resetDefault($model->direccionable_type, $model->direccionable_id);
             }
 
             $model->update([
@@ -75,22 +74,22 @@ class EloquentDireccionRepository implements DireccionRepository
         DireccionModel::findOrFail($id)->delete();
     }
 
-    public function setAsDefault(int $id, int $clientId): void
+    public function setAsDefault(int $id, string $ownerType, int $ownerId): void
     {
-        DB::transaction(function () use ($id, $clientId) {
-            $this->resetDefault($clientId);
+        DB::transaction(function () use ($id, $ownerType, $ownerId) {
+            $this->resetDefault($ownerType, $ownerId);
             DireccionModel::where('id', $id)
-                ->where('direccionable_id', $clientId)
-                ->where('direccionable_type', UsuarioModel::class)
+                ->where('direccionable_id', $ownerId)
+                ->where('direccionable_type', $ownerType)
                 ->firstOrFail()
                 ->update(['es_predeterminada' => true]);
         });
     }
 
-    private function resetDefault(int $clientId): void
+    private function resetDefault(string $ownerType, int $ownerId): void
     {
-        DireccionModel::where('direccionable_id', $clientId)
-            ->where('direccionable_type', UsuarioModel::class)
+        DireccionModel::where('direccionable_id', $ownerId)
+            ->where('direccionable_type', $ownerType)
             ->where('es_predeterminada', true)
             ->update(['es_predeterminada' => false]);
     }

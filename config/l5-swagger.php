@@ -47,6 +47,7 @@ return [
                     base_path('app'),
                     base_path('src/'),
 
+
                 ],
             ],
         ],

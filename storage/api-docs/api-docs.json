@@ -932,6 +932,627 @@
                 ]
             }
         },
+        "/api/Catalog_productos/productos": {
+            "get": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Obtener todos los productos",
+                "operationId": "e72d31f1d5158128067bde855aa9e494",
+                "responses": {
+                    "200": {
+                        "description": "Lista de productos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "nombre": {
+                                                "type": "string"
+                                            },
+                                            "descripcion": {
+                                                "type": "string",
+                                                "nullable": true
+                                            },
+                                            "imagen_path": {
+                                                "type": "string",
+                                                "nullable": true
+                                            },
+                                            "precio": {
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "stock": {
+                                                "type": "integer"
+                                            },
+                                            "sku": {
+                                                "type": "string",
+                                                "nullable": true
+                                            },
+                                            "categoria_id": {
+                                                "type": "integer",
+                                                "nullable": true
+                                            },
+                                            "activo": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Crear un nuevo producto",
+                "operationId": "3693bf98b6b1a5deb1a322a01075151c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Cera para Cabello"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Cera de fijación fuerte"
+                                    },
+                                    "imagen_path": {
+                                        "type": "string",
+                                        "example": "productos/cera.jpg",
+                                        "nullable": true
+                                    },
+                                    "precio": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 150.5
+                                    },
+                                    "stock": {
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "sku": {
+                                        "type": "string",
+                                        "example": "CERA-003"
+                                    },
+                                    "categoria_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "activo": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Producto creado exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Producto creado exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Catalog_productos/productos/{id}": {
+            "get": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Obtener un producto por ID",
+                "operationId": "a9b170f8a71eb9314dee254268a93f7d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del producto"
+                    },
+                    "404": {
+                        "description": "Producto no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Actualizar un producto",
+                "operationId": "78f73b67f99e9203a3f178d358a0e601",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Cera para Cabello Mate"
+                                    },
+                                    "precio": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 160
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Producto actualizado"
+                    },
+                    "404": {
+                        "description": "Producto no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Eliminar un producto (Soft Delete)",
+                "operationId": "ecc652f1609b6b515a7229a41d2d42da",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Producto eliminado"
+                    },
+                    "404": {
+                        "description": "Producto no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Client_direcciones/direcciones": {
+            "get": {
+                "tags": [
+                    "Direcciones de Cliente"
+                ],
+                "summary": "Obtener todas las direcciones del cliente autenticado",
+                "operationId": "b8d931442e571cbe35ed9c3e40aa7efc",
+                "responses": {
+                    "200": {
+                        "description": "Lista de direcciones del cliente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "readOnly": true,
+                                                "example": 1
+                                            },
+                                            "direccionable_id": {
+                                                "type": "integer",
+                                                "readOnly": true,
+                                                "example": 5
+                                            },
+                                            "direccionable_type": {
+                                                "type": "string",
+                                                "readOnly": true,
+                                                "example": "Src\\Client\\usuarios\\infrastructure\\Persistence\\Eloquent\\UsuarioModel"
+                                            },
+                                            "direccion": {
+                                                "type": "string",
+                                                "example": "Calle Falsa 123"
+                                            },
+                                            "colonia": {
+                                                "type": "string",
+                                                "example": "Centro"
+                                            },
+                                            "codigo_postal": {
+                                                "type": "string",
+                                                "example": "150001"
+                                            },
+                                            "ciudad": {
+                                                "type": "string",
+                                                "example": "Duitama"
+                                            },
+                                            "estado": {
+                                                "type": "string",
+                                                "example": "Boyacá"
+                                            },
+                                            "referencias": {
+                                                "type": "string",
+                                                "example": "Casa de dos pisos",
+                                                "nullable": true
+                                            },
+                                            "es_predeterminada": {
+                                                "type": "boolean",
+                                                "example": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Direcciones de Cliente"
+                ],
+                "summary": "Crear una nueva dirección para el cliente",
+                "operationId": "f3db1bfbd0d8f0e029dfb51c58acabc9",
+                "requestBody": {
+                    "description": "Datos de la nueva dirección",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "direccion",
+                                    "colonia",
+                                    "codigo_postal",
+                                    "ciudad",
+                                    "estado"
+                                ],
+                                "properties": {
+                                    "direccion": {
+                                        "type": "string",
+                                        "example": "Avenida Principal 456"
+                                    },
+                                    "colonia": {
+                                        "type": "string",
+                                        "example": "El Sol"
+                                    },
+                                    "codigo_postal": {
+                                        "type": "string",
+                                        "example": "150002"
+                                    },
+                                    "ciudad": {
+                                        "type": "string",
+                                        "example": "Duitama"
+                                    },
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "Boyacá"
+                                    },
+                                    "referencias": {
+                                        "type": "string",
+                                        "example": "Frente al parque",
+                                        "nullable": true
+                                    },
+                                    "es_predeterminada": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Dirección creada exitosamente."
+                    },
+                    "422": {
+                        "description": "Error de validación de datos."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Client_direcciones/direcciones/{id}": {
+            "get": {
+                "tags": [
+                    "Direcciones de Cliente"
+                ],
+                "summary": "Obtener una dirección por ID",
+                "operationId": "0fd7aecc0579ec94a6ed29826c3f9f6a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles de la dirección.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "readOnly": true,
+                                            "example": 1
+                                        },
+                                        "direccionable_id": {
+                                            "type": "integer",
+                                            "readOnly": true,
+                                            "example": 5
+                                        },
+                                        "direccionable_type": {
+                                            "type": "string",
+                                            "readOnly": true,
+                                            "example": "Src\\Client\\usuarios\\infrastructure\\Persistence\\Eloquent\\UsuarioModel"
+                                        },
+                                        "direccion": {
+                                            "type": "string",
+                                            "example": "Calle Falsa 123"
+                                        },
+                                        "colonia": {
+                                            "type": "string",
+                                            "example": "Centro"
+                                        },
+                                        "codigo_postal": {
+                                            "type": "string",
+                                            "example": "150001"
+                                        },
+                                        "ciudad": {
+                                            "type": "string",
+                                            "example": "Duitama"
+                                        },
+                                        "estado": {
+                                            "type": "string",
+                                            "example": "Boyacá"
+                                        },
+                                        "referencias": {
+                                            "type": "string",
+                                            "example": "Casa de dos pisos",
+                                            "nullable": true
+                                        },
+                                        "es_predeterminada": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dirección no encontrada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Direcciones de Cliente"
+                ],
+                "summary": "Actualizar una dirección existente",
+                "operationId": "65da38e03f23223785fc70486a79f9b2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos a actualizar de la dirección",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "direccion": {
+                                        "type": "string",
+                                        "example": "Calle Actualizada 789"
+                                    },
+                                    "colonia": {
+                                        "type": "string",
+                                        "example": "La Luna"
+                                    },
+                                    "codigo_postal": {
+                                        "type": "string",
+                                        "example": "150003"
+                                    },
+                                    "ciudad": {
+                                        "type": "string",
+                                        "example": "Duitama"
+                                    },
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "Boyacá"
+                                    },
+                                    "referencias": {
+                                        "type": "string",
+                                        "example": "Edificio alto, apartamento 101",
+                                        "nullable": true
+                                    },
+                                    "es_predeterminada": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Dirección actualizada exitosamente."
+                    },
+                    "404": {
+                        "description": "Dirección no encontrada."
+                    },
+                    "422": {
+                        "description": "Error de validación de datos."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Direcciones de Cliente"
+                ],
+                "summary": "Eliminar una dirección",
+                "operationId": "60dab5ac2e8e61edc49b5570024ce616",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Dirección eliminada exitosamente."
+                    },
+                    "404": {
+                        "description": "Dirección no encontrada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Client_direcciones/direcciones/{id}/default": {
+            "post": {
+                "tags": [
+                    "Direcciones de Cliente"
+                ],
+                "summary": "Establecer una dirección como predeterminada",
+                "operationId": "b2712546b4ddf2d407fb75f160b947ab",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Dirección establecida como predeterminada."
+                    },
+                    "404": {
+                        "description": "Dirección no encontrada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Client_usuarios/auth/register": {
             "post": {
                 "tags": [
@@ -1337,6 +1958,279 @@
                     }
                 ]
             }
+        },
+        "/api/Scheduling_horarios_sucursal/horarios": {
+            "get": {
+                "tags": [
+                    "Horarios Sucursal"
+                ],
+                "summary": "Obtener todos los horarios de sucursales",
+                "operationId": "4b550d253c6d05274beb94276ee97ec8",
+                "responses": {
+                    "200": {
+                        "description": "Lista de horarios",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "readOnly": true
+                                            },
+                                            "sucursal_id": {
+                                                "type": "integer"
+                                            },
+                                            "dia_semana": {
+                                                "description": "0=Domingo, 1=Lunes,..., 6=Sábado",
+                                                "type": "integer"
+                                            },
+                                            "hora_apertura": {
+                                                "type": "string",
+                                                "format": "time",
+                                                "nullable": true
+                                            },
+                                            "hora_cierre": {
+                                                "type": "string",
+                                                "format": "time",
+                                                "nullable": true
+                                            },
+                                            "esta_cerrado_regularmente": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Horarios Sucursal"
+                ],
+                "summary": "Crear un nuevo horario para una sucursal",
+                "operationId": "adc8fda9023915f3563f103127346a33",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "sucursal_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "dia_semana": {
+                                        "description": "0=Domingo, 1=Lunes,..., 6=Sábado",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "hora_apertura": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "09:00"
+                                    },
+                                    "hora_cierre": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "18:00"
+                                    },
+                                    "esta_cerrado_regularmente": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Horario creado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Scheduling_horarios_sucursal/horarios/{id}": {
+            "get": {
+                "tags": [
+                    "Horarios Sucursal"
+                ],
+                "summary": "Obtener un horario por ID",
+                "operationId": "4ccff52d8372278ec3d76468abdce58e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del horario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "readOnly": true
+                                        },
+                                        "sucursal_id": {
+                                            "type": "integer"
+                                        },
+                                        "dia_semana": {
+                                            "description": "0=Domingo, 1=Lunes,..., 6=Sábado",
+                                            "type": "integer"
+                                        },
+                                        "hora_apertura": {
+                                            "type": "string",
+                                            "format": "time",
+                                            "nullable": true
+                                        },
+                                        "hora_cierre": {
+                                            "type": "string",
+                                            "format": "time",
+                                            "nullable": true
+                                        },
+                                        "esta_cerrado_regularmente": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Horario no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Horarios Sucursal"
+                ],
+                "summary": "Actualizar un horario de sucursal",
+                "operationId": "f9ed328d69cfc5889aa59bb4fb64e1b0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "sucursal_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "dia_semana": {
+                                        "description": "0=Domingo, 1=Lunes,..., 6=Sábado",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "hora_apertura": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "09:00"
+                                    },
+                                    "hora_cierre": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "18:00"
+                                    },
+                                    "esta_cerrado_regularmente": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Horario actualizado"
+                    },
+                    "404": {
+                        "description": "Horario no encontrado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Horarios Sucursal"
+                ],
+                "summary": "Eliminar un horario de sucursal",
+                "operationId": "8b1355ee7b140a211ea15fa6ae4d5574",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Horario eliminado"
+                    },
+                    "404": {
+                        "description": "Horario no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -1363,12 +2257,24 @@
             "description": "Sucursales"
         },
         {
+            "name": "Productos",
+            "description": "Productos"
+        },
+        {
+            "name": "Direcciones de Cliente",
+            "description": "Direcciones de Cliente"
+        },
+        {
             "name": "Autenticación",
             "description": "Autenticación"
         },
         {
             "name": "Roles de Prueba",
             "description": "Roles de Prueba"
+        },
+        {
+            "name": "Horarios Sucursal",
+            "description": "Horarios Sucursal"
         }
     ]
 }

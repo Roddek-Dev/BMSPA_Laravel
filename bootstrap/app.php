@@ -37,16 +37,17 @@ return Application::configure(basePath: dirname(__DIR__))
         // Providers Faltantes
         // Src\Admin\recordatorios\infrastructure\Providers\RecordatorioServiceProvider::class,
         // Src\Admin\promociones\infrastructure\Providers\PromocionServiceProvider::class,
-        // Src\Catalog\productos\infrastructure\Providers\ProductoServiceProvider::class,
+        Src\Catalog\productos\infrastructure\Providers\ProductoServiceProvider::class,
         // Src\Catalog\servicios\infrastructure\Providers\ServicioServiceProvider::class,
         // Src\Client\musica_preferencias_navegacion\infrastructure\Providers\MusicaPreferenciaNavegacionServiceProvider::class,
         // Src\Client\ordenes\infrastructure\Providers\OrdenServiceProvider::class,
         // Src\Client\reseñas\infrastructure\Providers\ReseñaServiceProvider::class,
         // Src\Scheduling\agendamientos\infrastructure\Providers\AgendamientoServiceProvider::class,
-        // Src\Scheduling\horarios_sucursal\infrastructure\Providers\HorarioSucursalServiceProvider::class,
+        Src\Scheduling\horarios_sucursal\infrastructure\Providers\HorarioSucursalServiceProvider::class,
+        
 
         // Providers de Personal y Direcciones
         // Src\Admin\personal\infrastructure\Providers\PersonalServiceProvider::class,
-        // Src\Client\direcciones\infrastructure\Providers\DireccionServiceProvider::class,
+        Src\Client\direcciones\infrastructure\Providers\DireccionServiceProvider::class,
 
     ])->create();

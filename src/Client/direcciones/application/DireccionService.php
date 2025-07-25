@@ -11,9 +11,9 @@ final class DireccionService
     {
     }
 
-    public function findAllByClient(int $clientId): array
+    public function findAllByOwner(string $ownerType, int $ownerId): array
     {
-        return $this->repository->findAllByClient($clientId);
+        return $this->repository->findAllByOwner($ownerType, $ownerId);
     }
 
     public function findById(int $id): ?Direccion
@@ -36,8 +36,8 @@ final class DireccionService
         $this->repository->delete($id);
     }
     
-    public function setAsDefault(int $id, int $clientId): void
+    public function setAsDefault(int $id, string $ownerType, int $ownerId): void
     {
-        $this->repository->setAsDefault($id, $clientId);
+        $this->repository->setAsDefault($id, $ownerType, $ownerId);
     }
 }
