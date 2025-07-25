@@ -42,3 +42,7 @@ Route::prefix('Catalog_productos')->group(base_path('src/Catalog/productos/infra
 Route::prefix('Catalog_servicios')->group(base_path('src/Catalog/servicios/infrastructure/routes/api.php'));
 
 Route::prefix('Payments_transacciones_pago')->group(base_path('src/Payments/transacciones_pago/infrastructure/routes/api.php'));
+
+Route::prefix('Client_direcciones')->group(base_path('src/Client/direcciones/infrastructure/routes/api.php'));
+
+Route::prefix('Client_direcciones')->group(base_path('src/Client/direcciones/infrastructure/routes/api.php'));

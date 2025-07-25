@@ -24,6 +24,7 @@ class SucursalController extends Controller
      *     path="/api/Admin_sucursales/sucursales",
      *     summary="Obtener todas las sucursales",
      *     tags={"Sucursales"},
+     *     security={{"bearerAuth":{}}}, 
      *     @OA\Response(
      *         response=200,
      *         description="Lista de sucursales",
@@ -35,7 +36,7 @@ class SucursalController extends Controller
      *                 @OA\Property(property="imagen_path", type="string", example="http://example.com/image.jpg", nullable=true),
      *                 @OA\Property(property="telefono_contacto", type="string", example="5512345678", nullable=true),
      *                 @OA\Property(property="email_contacto", type="string", example="centro@example.com", nullable=true),
-     *                 @OA\Property(property="link_maps", type="string", example="https://maps.app.goo.gl/example", nullable=true),
+     *                  @OA\Property(property="link_maps", type="string", example="https://maps.google.com/?q=19.4326,-99.1332", nullable=true),
      *                 @OA\Property(property="latitud", type="number", format="float", example=19.4326, nullable=true),
      *                 @OA\Property(property="longitud", type="number", format="float", example=-99.1332, nullable=true),
      *                 @OA\Property(property="activo", type="boolean", example=true)
@@ -46,7 +47,6 @@ class SucursalController extends Controller
      */
     public function index()
     {
-        dd('Reached SucursalController index method');
         $sucursales = $this->sucursalService->findAll();
         return response()->json($sucursales);
     }
@@ -68,6 +68,7 @@ class SucursalController extends Controller
      *             @OA\Property(property="link_maps", type="string", example="https://maps.app.goo.gl/example", nullable=true),
      *             @OA\Property(property="latitud", type="number", format="float", example=19.4326, nullable=true),
      *             @OA\Property(property="longitud", type="number", format="float", example=-99.1332, nullable=true),
+
      *             @OA\Property(property="activo", type="boolean", example=true)
      *         )
      *     ),
@@ -88,6 +89,8 @@ class SucursalController extends Controller
      *     path="/api/Admin_sucursales/sucursales/{id}",
      *     summary="Obtener una sucursal por ID",
      *     tags={"Sucursales"},
+     *     security={{"bearerAuth":{}}},  
+     * 
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -154,12 +157,7 @@ class SucursalController extends Controller
      *         response=200,
      *         description="Sucursal actualizada exitosamente"
      *     )
-     * )
-     */
-    public function update(SucursalRequest $request, int $id)
-    {
-        $sucursal = $this->sucursalService->update($id, $request->toEntity());
-        return response()->json($sucursal);
+     * )link_maps
     }
 
     /**

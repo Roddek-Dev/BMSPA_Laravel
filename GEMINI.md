@@ -7,7 +7,7 @@ El objetivo es desarrollar el backend para la aplicación web de una barbería y
 ## 2. Principios Fundamentales (Reglas Críticas)
 
 1.  **Arquitectura Hexagonal Obligatoria**: TODO el código debe residir dentro del directorio `src/`, organizado por módulos y capas (dominio, aplicación, infraestructura). **NUNCA** se debe colocar lógica de negocio o infraestructura en `app/`.
-2.  **Documentación Swagger en Línea**: Las definiciones de esquemas (`@OA\Property`) para los endpoints DEBEN estar **siempre en línea** dentro de `@OA\JsonContent` en el controlador. **NUNCA** usar bloques `@OA\Schema` globales al final del archivo.
+2.  **Documentación Swagger en Línea**: Las definiciones de esquemas (`@OA\Property`) para los endpoints DEBEN estar **siempre en línea** dentro de `@OA\JsonContent` en el controlador. **NUNCA** usar bloques `@OA\Schema` globales al final del archivo. **IMPORTANTE**: Solo debe existir una anotación `@OA\Info` global en todo el proyecto (generalmente en `app/Http/Controllers/Controller.php`). **NUNCA** añadir `@OA\Info` en controladores específicos de módulos.
 3.  **Fuente de Verdad de la BD**: La estructura de la base de datos, nombres de tablas y columnas se rigen **estrictamente** por el archivo `dump-bmspa_arquitecture_hexagonal_laravel-202507181922.sql`. Los modelos y repositorios deben usar los nombres de columna exactos (`snake_case`).
 4.  **Autenticación y Middleware**: La autenticación para rutas de la API **SIEMPRE** usa el guard `auth:api` (JWT). El middleware de roles (`CheckRole`) distingue el acceso según el rol del usuario autenticado.
 
@@ -30,7 +30,7 @@ La estructura completa está definida en `dump-bmspa_arquitecture_hexagonal_lara
 
 ## 5. Roles y Permisos de Usuario
 
-El sistema tiene 4 roles con una jerarquía clara. El middleware `CheckRole` realiza la validación de manera **insensible a mayúsculas y minúsculas**.
+El sistema tiene 4 roles con una jerarquía clara. El middleware `CheckRole` realiza la validación de manera **insensible a mayúsculas o minúsculas**.
 
 | Rol | Descripción | Permisos Clave |
 | :--- | :--- | :--- |
@@ -48,7 +48,10 @@ El sistema tiene 4 roles con una jerarquía clara. El middleware `CheckRole` rea
 
 #### **Documentación Swagger (OpenAPI)**
 -   **REGLA CRÍTICA**: Los esquemas deben ser **en línea** dentro de `@OA\JsonContent`. **NO** usar bloques de Schema globales.
--   **Rutas Completas en `@OA\Path`**: Asegurarse de que el `path` en las anotaciones `@OA\Path` en los controladores incluya el prefijo completo de la ruta definido en `routes/api.php` (ej. `/api/Admin_modulo/recurso`).
+    -   **Ejemplo de lo que NO hacer**: `@OA\JsonContent(ref="#/components/schemas/MiEsquema")`
+    -   **Ejemplo de lo que SÍ hacer**: `@OA\JsonContent(@OA\Property(property="campo", type="string", example="valor"))`
+-   **Rutas Completas en `@OA\Path`**: Asegurarse de que el `path` en las anotaciones `@OA\Path` en los controladores incluya el prefijo completo de la ruta definido en `routes/api.php` **Y** el nombre del recurso si se usa `Route::resource`.
+    -   **Ejemplo**: Si `routes/api.php` tiene `Route::prefix('Admin_modulo')->group(...)` y el archivo de rutas del módulo tiene `Route::resource('recurso', ...)`, entonces el `path` en el controlador debe ser `/api/Admin_modulo/recurso`.
 -   **Referencia**: Seguir el patrón del archivo `Src\Client\usuarios\infrastructure\Http\Controllers\AuthController.php`.
 -   **Autenticación**: Usar `security={{"bearerAuth":{}}}`. **NUNCA** usar `sanctum`.
 -   **Configuración `l5-swagger`**: En `config/l5-swagger.php`, la sección `paths.annotations` **DEBE** incluir `base_path('src/')` y `base_path('app')`.
@@ -67,15 +70,37 @@ El sistema tiene 4 roles con una jerarquía clara. El middleware `CheckRole` rea
 -   **Fuente de Verdad**: El archivo `.sql` es la única referencia para nombres de tablas y columnas.
 -   **Consistencia**: Usar nombres de columna exactos (`snake_case` como `cliente_usuario_id`) en modelos Eloquent (`$fillable`, relaciones) y repositorios.
 
-## 7. Implementación de Referencia (CRUD de Categorías)
-
-**El módulo `Admin/categorias` es la implementación de referencia para todos los futuros CRUDs.**
-
--   **Flujo de Datos**: Seguir el mismo patrón de capas (Controller -> Service -> Repository -> Model).
--   **Rutas**: Definir las rutas en `src/Admin/categorias/infrastructure/routes/api.php` y registrarlas con un prefijo en `routes/api.php`.
--   **Documentación Swagger**: Mantener las anotaciones de Swagger en el controlador, asegurándose de que el `path` coincida con la ruta completa registrada en Laravel (incluyendo prefijos).
--   **Estructura de Carpetas**: Replicar la estructura de `domain`, `application`, y `infrastructure` como se hizo en el módulo de categorías.
-
-## 8. Enfoque Actual del Proyecto
+## 7. Enfoque Actual del Proyecto
 
 El foco principal es la implementación de las operaciones **CRUD** para cada entidad, **siguiendo estrictamente el modelo y la estructura del módulo de `categorias` como plantilla base**. Esto garantiza consistencia en la arquitectura, el enrutamiento y la documentación en todo el proyecto.
+
+## 8. Directrices de Depuración
+
+Cuando te encuentres con errores, especialmente relacionados con rutas, autenticación o autorización, sigue estos pasos sistemáticos:
+
+1.  **Verificar Rutas Registradas**:
+    *   Ejecuta `php artisan route:list --json` para obtener una lista detallada de todas las rutas registradas, incluyendo sus middlewares.
+    *   Asegúrate de que la ruta que intentas acceder existe y que los middlewares (`api`, `auth:api`, `role:TU_ROL`) están aplicados correctamente.
+
+2.  **Limpiar Caché de Laravel**:
+    *   Después de cualquier cambio en rutas o configuración, siempre ejecuta:
+        ```bash
+        php artisan route:clear
+        php artisan config:clear
+        php artisan cache:clear
+        php artisan view:clear
+        ```
+    *   Si estás usando `php artisan serve`, reinícialo después de limpiar la caché.
+
+3.  **Revisar Configuración de Autenticación (JWT)**:
+    *   Verifica `config/auth.php` para asegurar que el guard `api` esté configurado para usar el driver `jwt` y el provider de usuarios correcto.
+    *   Revisa `config/jwt.php` para cualquier configuración errónea (secreto, TTL, etc.).
+
+4.  **Depuración de Flujo de Ejecución (`dd()` o Logs)**:
+    *   Si el error es "Unauthenticated" o "NotFoundHttpException" y las rutas parecen correctas, inserta `dd('Mensaje de depuración');` en puntos clave del código para rastrear dónde se detiene la ejecución o dónde los datos no son los esperados.
+        *   **Ejemplo**: Al inicio del método del controlador, dentro del middleware, o en el repositorio.
+    *   Utiliza `Log::info()` para registrar información en `storage/logs/laravel.log` si no quieres detener la ejecución.
+
+5.  **Comparar con Módulos Funcionando**:
+    *   Si un módulo similar funciona (ej. `categorias`), compara línea por línea los archivos relevantes (controlador, request, service, repository, provider, rutas) con el módulo que falla para identificar cualquier diferencia sutil.
+

@@ -630,7 +630,7 @@
                                             },
                                             "link_maps": {
                                                 "type": "string",
-                                                "example": "https://maps.app.goo.gl/example",
+                                                "example": "https://maps.google.com/?q=19.4326,-99.1332",
                                                 "nullable": true
                                             },
                                             "latitud": {
@@ -656,7 +656,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -809,14 +814,19 @@
                     "404": {
                         "description": "Sucursal no encontrada"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
                     "Sucursales"
                 ],
                 "summary": "Actualizar una sucursal",
-                "operationId": "6e03bf40998dcbadad55bd3a8e8ee299",
+                "operationId": "ecb7d93e5d8a655b316ec008329e24b0",
                 "parameters": [
                     {
                         "name": "id",

@@ -1,25 +1,21 @@
 <?php
 
-namespace App\Models;
+namespace Src\Client\direcciones\infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Direccion extends Model
+class DireccionModel extends Model
 {
     use HasFactory, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $table = 'direcciones';
+
     protected $fillable = [
         'direccionable_id',
         'direccionable_type',
         'direccion',
-        'indicaciones',
         'colonia',
         'codigo_postal',
         'ciudad',
@@ -28,9 +24,10 @@ class Direccion extends Model
         'es_predeterminada',
     ];
 
-    /**
-     * Obtiene el modelo padre al que pertenece esta dirección (puede ser una Sucursal, Orden, etc.).
-     */
+    protected $casts = [
+        'es_predeterminada' => 'boolean',
+    ];
+
     public function direccionable()
     {
         return $this->morphTo();
