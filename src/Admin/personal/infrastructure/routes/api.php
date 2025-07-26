@@ -1,9 +1,8 @@
 <?php
 
-//use Src\Admin\personal\infrastructure\controllers\ExampleGETController;
+use Illuminate\Support\Facades\Route;
+use Src\Admin\personal\infrastructure\Http\Controllers\PersonalController;
 
-// Simpele route example
-// Route::get('/', [ExampleGETController::class, 'index']);
-
-//Authenticathed route example
-// Route::middleware(['auth:sanctum','activitylog'])->get('/', [ExampleGETController::class, 'index']);
+Route::middleware(['auth:api', 'role:GERENTE'])->group(function () {
+    Route::resource('personal', PersonalController::class);
+});

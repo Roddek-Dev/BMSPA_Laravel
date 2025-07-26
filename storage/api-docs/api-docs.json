@@ -589,6 +589,211 @@
                 ]
             }
         },
+        "/api/Admin_personal/personal": {
+            "get": {
+                "tags": [
+                    "Personal"
+                ],
+                "summary": "Obtener todo el personal",
+                "operationId": "72ae6b237f991299b826e067e362da9c",
+                "responses": {
+                    "200": {
+                        "description": "Lista del personal"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Personal"
+                ],
+                "summary": "Crear un nuevo registro de personal",
+                "operationId": "5c03022964284c411f6de4188dc70761",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "usuario_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "sucursal_asignada_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "tipo_personal": {
+                                        "type": "string",
+                                        "example": "BARBERO"
+                                    },
+                                    "numero_empleado": {
+                                        "type": "string",
+                                        "example": "EMP-001"
+                                    },
+                                    "fecha_contratacion": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-01-15"
+                                    },
+                                    "activo_en_empresa": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Personal creado exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Personal creado exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Admin_personal/personal/{id}": {
+            "get": {
+                "tags": [
+                    "Personal"
+                ],
+                "summary": "Obtener un registro de personal por ID",
+                "operationId": "7043f200ff396709bf72dac922086167",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del personal"
+                    },
+                    "404": {
+                        "description": "Personal no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Personal"
+                ],
+                "summary": "Actualizar un registro de personal",
+                "operationId": "39a6d4039d568f042d3bd494043131ff",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "sucursal_asignada_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "tipo_personal": {
+                                        "type": "string",
+                                        "example": "ESTILISTA"
+                                    },
+                                    "activo_en_empresa": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Personal actualizado"
+                    },
+                    "404": {
+                        "description": "Personal no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Personal"
+                ],
+                "summary": "Eliminar un registro de personal (Soft Delete)",
+                "operationId": "8b47946d4bcb1eaf71b24aa8a58ede6b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Personal eliminado"
+                    },
+                    "404": {
+                        "description": "Personal no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admin_sucursales/sucursales": {
             "get": {
                 "tags": [
@@ -1178,6 +1383,256 @@
                     },
                     "404": {
                         "description": "Producto no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Catalog_servicios/servicios": {
+            "get": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Obtener todos los servicios",
+                "operationId": "d28910473a5737d9617db146885ce6b8",
+                "responses": {
+                    "200": {
+                        "description": "Lista de servicios",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "nombre": {
+                                                "type": "string"
+                                            },
+                                            "descripcion": {
+                                                "type": "string",
+                                                "nullable": true
+                                            },
+                                            "imagen_path": {
+                                                "type": "string",
+                                                "nullable": true
+                                            },
+                                            "precio_base": {
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "duracion_minutos": {
+                                                "type": "integer"
+                                            },
+                                            "categoria_id": {
+                                                "type": "integer",
+                                                "nullable": true
+                                            },
+                                            "especialidad_requerida_id": {
+                                                "type": "integer",
+                                                "nullable": true
+                                            },
+                                            "activo": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Crear un nuevo servicio",
+                "operationId": "c8c41a565510cc9db15804997c48899a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Corte de Cabello Clásico"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Corte con máquina y tijera."
+                                    },
+                                    "precio_base": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 250
+                                    },
+                                    "duracion_minutos": {
+                                        "type": "integer",
+                                        "example": 30
+                                    },
+                                    "categoria_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "especialidad_requerida_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "activo": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Servicio creado exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Servicio creado exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Catalog_servicios/servicios/{id}": {
+            "get": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Obtener un servicio por ID",
+                "operationId": "dd2aa29302bcc75389920b2b8f680fa2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del servicio"
+                    },
+                    "404": {
+                        "description": "Servicio no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Actualizar un servicio",
+                "operationId": "c9462cd5c3ea7a9111f046007776a128",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Corte de Barba"
+                                    },
+                                    "precio_base": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 150
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Servicio actualizado"
+                    },
+                    "404": {
+                        "description": "Servicio no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Eliminar un servicio (Soft Delete)",
+                "operationId": "b46406bf33d1a6b624205c9ea3aea331",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Servicio eliminado"
+                    },
+                    "404": {
+                        "description": "Servicio no encontrado"
                     }
                 },
                 "security": [
@@ -1959,6 +2414,221 @@
                 ]
             }
         },
+        "/api/Scheduling_agendamientos/agendamientos": {
+            "get": {
+                "tags": [
+                    "Agendamientos"
+                ],
+                "summary": "Obtener todos los agendamientos",
+                "operationId": "7e06b010977ded84f4973dc6b319308b",
+                "responses": {
+                    "200": {
+                        "description": "Lista de agendamientos"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Agendamientos"
+                ],
+                "summary": "Crear un nuevo agendamiento",
+                "operationId": "dcf1d68c43b8f02cc5d724b099bbae5f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "cliente_usuario_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "personal_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "servicio_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "sucursal_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fecha_hora_inicio": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-12-25 10:00:00"
+                                    },
+                                    "fecha_hora_fin": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-12-25 10:30:00"
+                                    },
+                                    "precio_final": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 250
+                                    },
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "PROGRAMADA"
+                                    },
+                                    "notas_cliente": {
+                                        "type": "string",
+                                        "example": "Por favor, ser puntual."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Agendamiento creado exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Agendamiento creado exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Scheduling_agendamientos/agendamientos/{id}": {
+            "get": {
+                "tags": [
+                    "Agendamientos"
+                ],
+                "summary": "Obtener un agendamiento por ID",
+                "operationId": "e6f3b1120d6928aa359af907fcd2775d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del agendamiento"
+                    },
+                    "404": {
+                        "description": "Agendamiento no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Agendamientos"
+                ],
+                "summary": "Actualizar un agendamiento",
+                "operationId": "adc34adcdc81643bf352545ec15f8346",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "CONFIRMADA"
+                                    },
+                                    "notas_internas": {
+                                        "type": "string",
+                                        "example": "Cliente contactado por teléfono."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Agendamiento actualizado"
+                    },
+                    "404": {
+                        "description": "Agendamiento no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Agendamientos"
+                ],
+                "summary": "Eliminar un agendamiento (Soft Delete)",
+                "operationId": "2080c63635838e5a3d465a4f225c9f92",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Agendamiento eliminado"
+                    },
+                    "404": {
+                        "description": "Agendamiento no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Scheduling_horarios_sucursal/horarios": {
             "get": {
                 "tags": [
@@ -2253,12 +2923,20 @@
             "description": "Especialidades"
         },
         {
+            "name": "Personal",
+            "description": "Personal"
+        },
+        {
             "name": "Sucursales",
             "description": "Sucursales"
         },
         {
             "name": "Productos",
             "description": "Productos"
+        },
+        {
+            "name": "Servicios",
+            "description": "Servicios"
         },
         {
             "name": "Direcciones de Cliente",
@@ -2271,6 +2949,10 @@
         {
             "name": "Roles de Prueba",
             "description": "Roles de Prueba"
+        },
+        {
+            "name": "Agendamientos",
+            "description": "Agendamientos"
         },
         {
             "name": "Horarios Sucursal",

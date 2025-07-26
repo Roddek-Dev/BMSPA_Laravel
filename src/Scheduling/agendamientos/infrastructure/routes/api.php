@@ -1,9 +1,8 @@
 <?php
 
-//use Src\Scheduling\agendamientos\infrastructure\controllers\ExampleGETController;
+use Illuminate\Support\Facades\Route;
+use Src\Scheduling\agendamientos\infrastructure\Http\Controllers\AgendamientoController;
 
-// Simpele route example
-// Route::get('/', [ExampleGETController::class, 'index']);
-
-//Authenticathed route example
-// Route::middleware(['auth:sanctum','activitylog'])->get('/', [ExampleGETController::class, 'index']);
+Route::middleware(['auth:api', 'role:GERENTE,ADMIN_SUCURSAL,EMPLEADO'])->group(function () {
+    Route::resource('agendamientos', AgendamientoController::class);
+});
