@@ -1,9 +1,15 @@
 <?php
 
-//use Src\Client\musica_preferencias_navegacion\infrastructure\controllers\ExampleGETController;
+use Illuminate\Support\Facades\Route;
+use Src\Client\musica_preferencias_navegacion\infrastructure\Http\Controllers\MusicaPreferenciaNavegacionController;
 
-// Simpele route example
-// Route::get('/', [ExampleGETController::class, 'index']);
+// Rutas públicas que cualquiera puede ver
+Route::get('preferencias', [MusicaPreferenciaNavegacionController::class, 'index']);
+Route::get('preferencias/{id}', [MusicaPreferenciaNavegacionController::class, 'show']);
 
-//Authenticathed route example
-// Route::middleware(['auth:sanctum','activitylog'])->get('/', [ExampleGETController::class, 'index']);
+// Rutas protegidas solo para Gerentes
+Route::middleware(['auth:api', 'role:GERENTE'])->group(function () {
+    Route::post('preferencias', [MusicaPreferenciaNavegacionController::class, 'store']);
+    Route::put('preferencias/{musica_preferencia}', [MusicaPreferenciaNavegacionController::class, 'update']);
+    Route::delete('preferencias/{id}', [MusicaPreferenciaNavegacionController::class, 'destroy']);
+});

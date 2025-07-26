@@ -2008,6 +2008,406 @@
                 ]
             }
         },
+        "/api/Client_musica_preferencias/preferencias": {
+            "get": {
+                "tags": [
+                    "Preferencias de Música"
+                ],
+                "summary": "Obtener todas las preferencias de música",
+                "operationId": "c0f6ecc3fdaea4f2bccbccc7a9dd7c99",
+                "responses": {
+                    "200": {
+                        "description": "Lista de preferencias de música"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Preferencias de Música"
+                ],
+                "summary": "Crear una nueva preferencia de música",
+                "operationId": "f97b91099ca6ec3b12b942604dec80bd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre_opcion": {
+                                        "type": "string",
+                                        "example": "Rock Clásico"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Lo mejor de los 70s y 80s."
+                                    },
+                                    "stream_url_ejemplo": {
+                                        "type": "string",
+                                        "format": "url",
+                                        "example": "https://example.com/stream/rock.mp3"
+                                    },
+                                    "activo": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Preferencia creada exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Preferencia de música creada exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Client_musica_preferencias/preferencias/{id}": {
+            "get": {
+                "tags": [
+                    "Preferencias de Música"
+                ],
+                "summary": "Obtener una preferencia por ID",
+                "operationId": "b2b9d532e60b4a2264d63cdc2a15a785",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles de la preferencia"
+                    },
+                    "404": {
+                        "description": "Preferencia no encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Preferencias de Música"
+                ],
+                "summary": "Actualizar una preferencia de música",
+                "operationId": "a66b979688fa3f5b49c2eb3b7af06cf8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre_opcion": {
+                                        "type": "string",
+                                        "example": "Pop Latino"
+                                    },
+                                    "activo": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Preferencia actualizada"
+                    },
+                    "404": {
+                        "description": "Preferencia no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Preferencias de Música"
+                ],
+                "summary": "Eliminar una preferencia de música",
+                "operationId": "e13121bad2f77c0bb9fba91ab8177ac8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Preferencia eliminada"
+                    },
+                    "404": {
+                        "description": "Preferencia no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Client_recordatorios/recordatorios": {
+            "get": {
+                "tags": [
+                    "Recordatorios"
+                ],
+                "summary": "Obtener todos los recordatorios (protegido)",
+                "operationId": "1d4a45044bdd8264e142270d2dfd68d3",
+                "responses": {
+                    "200": {
+                        "description": "Lista de recordatorios"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Recordatorios"
+                ],
+                "summary": "Crear un nuevo recordatorio",
+                "operationId": "7ac8bcf3806e32bd15d0ae8d1c6cf377",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "usuario_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "agendamiento_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "titulo": {
+                                        "type": "string",
+                                        "example": "Recordatorio de Cita"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Tu cita es mañana a las 10 AM."
+                                    },
+                                    "fecha_hora_recordatorio": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-12-24 10:00:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Recordatorio creado exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Recordatorio creado exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflicto de datos. Usualmente una clave foránea (usuario_id, agendamiento_id) no existe.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error al crear el recordatorio. Verifique que los IDs relacionados existan."
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "SQLSTATE[23000]: Integrity constraint violation..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación de datos."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Client_recordatorios/recordatorios/{id}": {
+            "get": {
+                "tags": [
+                    "Recordatorios"
+                ],
+                "summary": "Obtener un recordatorio por ID",
+                "operationId": "2df1ba6e468fda74ba52d0cd871cfb45",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del recordatorio"
+                    },
+                    "404": {
+                        "description": "Recordatorio no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Recordatorios"
+                ],
+                "summary": "Actualizar un recordatorio",
+                "operationId": "99122395d1f17c55cb306171e41b1678",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "titulo": {
+                                        "type": "string",
+                                        "example": "Cita de seguimiento"
+                                    },
+                                    "activo": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Recordatorio actualizado"
+                    },
+                    "404": {
+                        "description": "Recordatorio no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Recordatorios"
+                ],
+                "summary": "Eliminar un recordatorio",
+                "operationId": "a5fa0792d46866c9bb1d71f6ec7a04ab",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Recordatorio eliminado"
+                    },
+                    "404": {
+                        "description": "Recordatorio no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Client_usuarios/auth/register": {
             "post": {
                 "tags": [
@@ -2941,6 +3341,14 @@
         {
             "name": "Direcciones de Cliente",
             "description": "Direcciones de Cliente"
+        },
+        {
+            "name": "Preferencias de Música",
+            "description": "Preferencias de Música"
+        },
+        {
+            "name": "Recordatorios",
+            "description": "Recordatorios"
         },
         {
             "name": "Autenticación",

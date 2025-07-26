@@ -1,7 +1,7 @@
 <?php
 
 
-Route::prefix('Admin_recordatorios')->group(base_path('src/Admin/recordatorios/infrastructure/routes/api.php'));
+Route::prefix('Client_recordatorios')->group(base_path('src/Client/recordatorios/infrastructure/routes/api.php'));
 
 Route::prefix('Admin_personal')->group(base_path('src/Admin/personal/infrastructure/routes/api.php'));
 
@@ -29,7 +29,7 @@ Route::prefix('Client_detalle_ordenes')->group(base_path('src/Client/detalle_ord
 
 Route::prefix('Client_reseñas')->group(base_path('src/Client/reseñas/infrastructure/routes/api.php'));
 
-Route::prefix('Client_musica_preferencias_navegacion')->group(base_path('src/Client/musica_preferencias_navegacion/infrastructure/routes/api.php'));
+Route::prefix('Client_musica_preferencias')->group(base_path('src/Client/musica_preferencias_navegacion/infrastructure/routes/api.php'));
 
 Route::prefix('Scheduling_agendamientos')->group(base_path('src/Scheduling/agendamientos/infrastructure/routes/api.php'));
 
@@ -45,4 +45,3 @@ Route::prefix('Payments_transacciones_pago')->group(base_path('src/Payments/tran
 
 Route::prefix('Client_direcciones')->group(base_path('src/Client/direcciones/infrastructure/routes/api.php'));
 
-Route::prefix('Client_direcciones')->group(base_path('src/Client/direcciones/infrastructure/routes/api.php'));
