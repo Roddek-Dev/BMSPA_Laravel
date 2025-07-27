@@ -1,9 +1,12 @@
 <?php
 
-//use Src\Client\ordenes\infrastructure\controllers\ExampleGETController;
+use Illuminate\Support\Facades\Route;
+use Src\Client\ordenes\infrastructure\Http\Controllers\OrdenController;
 
-// Simpele route example
-// Route::get('/', [ExampleGETController::class, 'index']);
-
-//Authenticathed route example
-// Route::middleware(['auth:sanctum','activitylog'])->get('/', [ExampleGETController::class, 'index']);
+Route::middleware(['auth:api'])->group(function () {
+    // Para las órdenes, usamos Route::resource y forzamos el parámetro a 'id'
+    // para mantener la consistencia con los otros CRUDs que funcionan bien.
+    Route::resource('ordenes', OrdenController::class)
+        ->parameters(['ordenes' => 'id'])
+        ->except(['create', 'edit']);
+});

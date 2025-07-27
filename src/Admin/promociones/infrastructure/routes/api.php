@@ -1,9 +1,11 @@
 <?php
 
-//use Src\Admin\promociones\infrastructure\controllers\ExampleGETController;
+use Illuminate\Support\Facades\Route;
+use Src\Admin\promociones\infrastructure\Http\Controllers\PromocionController;
 
-// Simpele route example
-// Route::get('/', [ExampleGETController::class, 'index']);
-
-//Authenticathed route example
-// Route::middleware(['auth:sanctum','activitylog'])->get('/', [ExampleGETController::class, 'index']);
+Route::middleware(['auth:api', 'role:GERENTE'])->group(function () {
+    // Usamos el singular 'promocione' como Laravel lo infiere para el parámetro de la ruta
+    Route::resource('promociones', PromocionController::class)->parameters([
+        'promociones' => 'id'
+    ]);
+});

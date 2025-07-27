@@ -170,7 +170,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     * path="/api/Client_usuarios/auth/logout",
+     * path="/api@",
      * tags={"Autenticación"},
      * summary="Cerrar sesión",
      * description="Invalida el token de acceso del usuario actual.",

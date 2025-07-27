@@ -794,6 +794,213 @@
                 ]
             }
         },
+        "/api/Admin_promociones/promociones": {
+            "get": {
+                "tags": [
+                    "Promociones"
+                ],
+                "summary": "Obtener todas las promociones",
+                "operationId": "d164e3c02e32efba6c62deb0bf2f95b0",
+                "responses": {
+                    "200": {
+                        "description": "Lista de promociones"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Promociones"
+                ],
+                "summary": "Crear una nueva promoción",
+                "operationId": "c9ecb74a77de865226a63879c3b62ece",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "codigo": {
+                                        "type": "string",
+                                        "example": "VERANO25"
+                                    },
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Descuento de Verano"
+                                    },
+                                    "tipo_descuento": {
+                                        "type": "string",
+                                        "enum": [
+                                            "PORCENTAJE",
+                                            "MONTO_FIJO"
+                                        ],
+                                        "example": "PORCENTAJE"
+                                    },
+                                    "valor_descuento": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 25
+                                    },
+                                    "fecha_inicio": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-06-01 00:00:00"
+                                    },
+                                    "fecha_fin": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-08-31 23:59:59"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Promoción creada exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Promoción creada exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Admin_promociones/promociones/{id}": {
+            "get": {
+                "tags": [
+                    "Promociones"
+                ],
+                "summary": "Obtener una promoción por ID",
+                "operationId": "ddb55ac1d1e6c6e6ae98d073b8da2ea3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles de la promoción"
+                    },
+                    "404": {
+                        "description": "Promoción no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Promociones"
+                ],
+                "summary": "Actualizar una promoción",
+                "operationId": "95b90267c17821a8a2e1e66bf00232c7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Descuento Especial de Verano"
+                                    },
+                                    "activo": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Promoción actualizada."
+                    },
+                    "404": {
+                        "description": "Promoción no encontrada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Promociones"
+                ],
+                "summary": "Eliminar una promoción (Soft Delete)",
+                "operationId": "a8bc6954412f97d1d1aa3fb7e772d1e4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Promoción eliminada."
+                    },
+                    "404": {
+                        "description": "Promoción no encontrada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admin_sucursales/sucursales": {
             "get": {
                 "tags": [
@@ -2191,6 +2398,188 @@
                 ]
             }
         },
+        "/api/Client_ordenes/ordenes": {
+            "get": {
+                "tags": [
+                    "Órdenes de Cliente"
+                ],
+                "summary": "Obtener todas las órdenes del cliente autenticado",
+                "operationId": "96cfd2fcb98a2b2670946e8bbe1fa4db",
+                "responses": {
+                    "200": {
+                        "description": "Lista de órdenes del cliente."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Órdenes de Cliente"
+                ],
+                "summary": "Crear una nueva orden con sus detalles",
+                "operationId": "f621137a67f7bdba14e453e517564852",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "notas_orden": {
+                                        "type": "string",
+                                        "example": "Por favor, envolver para regalo."
+                                    },
+                                    "detalles": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "producto_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "cantidad": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Orden creada exitosamente."
+                    },
+                    "422": {
+                        "description": "Error de validación."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Client_ordenes/ordenes/{id}": {
+            "get": {
+                "tags": [
+                    "Órdenes de Cliente"
+                ],
+                "summary": "Obtener una orden propia por ID",
+                "operationId": "92ca63c282d860387ac2eab6c7a3ac65",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles de la orden."
+                    },
+                    "404": {
+                        "description": "Orden no encontrada."
+                    },
+                    "403": {
+                        "description": "No autorizado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Órdenes de Cliente"
+                ],
+                "summary": "Actualizar el estado de una orden (Admin)",
+                "operationId": "6ae54cb0871a6ae9bdf2fd158703b5d7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "estado_orden": {
+                                        "type": "string",
+                                        "example": "ENVIADA"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Orden actualizada."
+                    },
+                    "404": {
+                        "description": "Orden no encontrada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Órdenes de Cliente"
+                ],
+                "summary": "Cancelar una orden (Soft Delete)",
+                "operationId": "0b6e534508fb934104c5d12e2a659615",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Orden cancelada."
+                    },
+                    "404": {
+                        "description": "Orden no encontrada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Client_recordatorios/recordatorios": {
             "get": {
                 "tags": [
@@ -2597,14 +2986,14 @@
                 }
             }
         },
-        "/api/Client_usuarios/auth/logout": {
+        "/api@": {
             "post": {
                 "tags": [
                     "Autenticación"
                 ],
                 "summary": "Cerrar sesión",
                 "description": "Invalida el token de acceso del usuario actual.",
-                "operationId": "b13a621f374058794df35f93bf4a0f2e",
+                "operationId": "26757f380a912730a492cf223ce25b97",
                 "responses": {
                     "200": {
                         "description": "Sesión cerrada exitosamente.",
@@ -3327,6 +3716,10 @@
             "description": "Personal"
         },
         {
+            "name": "Promociones",
+            "description": "Promociones"
+        },
+        {
             "name": "Sucursales",
             "description": "Sucursales"
         },
@@ -3345,6 +3738,10 @@
         {
             "name": "Preferencias de Música",
             "description": "Preferencias de Música"
+        },
+        {
+            "name": "Órdenes de Cliente",
+            "description": "Órdenes de Cliente"
         },
         {
             "name": "Recordatorios",
