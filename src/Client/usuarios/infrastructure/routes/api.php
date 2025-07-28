@@ -20,25 +20,6 @@ Route::prefix('auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/oauth/logout', [OAuthController::class, 'logout']);
         Route::get('/oauth/me', [OAuthController::class, 'me']);
-        
-        // Rutas para administradores de sucursal
-        Route::middleware('role:ADMIN_SUCURSAL')->group(function () {
-            Route::get('/test-admin-sucursal', [TestRoleController::class, 'testAdminSucursal']);
-        });
-        
-        // Rutas para gerentes
-        Route::middleware('role:GERENTE')->group(function () {
-            Route::get('/test-gerente', [TestRoleController::class, 'testGerente']);
-        });
-        
-        // Rutas para empleados
-        Route::middleware('role:EMPLEADO')->group(function () {
-            Route::get('/test-empleado', [TestRoleController::class, 'testEmpleado']);
-        });
-        
-        // Rutas para clientes
-        Route::middleware('role:CLIENTE')->group(function () {
-            Route::get('/test-cliente', [TestRoleController::class, 'testCliente']);
-        });
+    
     });
 });

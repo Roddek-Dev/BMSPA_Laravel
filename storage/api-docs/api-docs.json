@@ -2797,6 +2797,243 @@
                 ]
             }
         },
+        "/api/Client_reseñas/reseñas/public": {
+            "get": {
+                "tags": [
+                    "Reseñas (Público)"
+                ],
+                "summary": "Obtener todas las reseñas aprobadas de un item",
+                "operationId": "1cd882adbdfa7fa8a0d32d823b06eb4e",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Tipo de item a reseñar",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "sucursal",
+                                "servicio",
+                                "producto"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del item a reseñar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de reseñas públicas."
+                    }
+                }
+            }
+        },
+        "/api/Client_reseñas/reseñas": {
+            "get": {
+                "tags": [
+                    "Reseñas (Cliente)"
+                ],
+                "summary": "Obtener mis reseñas",
+                "operationId": "8ed08e568ec4a841e4fbd09bee0dabcd",
+                "responses": {
+                    "200": {
+                        "description": "Lista de mis reseñas."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Reseñas (Cliente)"
+                ],
+                "summary": "Crear una nueva reseña (solo clientes)",
+                "operationId": "48b863ed5f5df564193374c953337690",
+                "requestBody": {
+                    "description": "Datos para crear la nueva reseña",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "reseñable_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "sucursal",
+                                            "servicio",
+                                            "producto"
+                                        ],
+                                        "example": "producto"
+                                    },
+                                    "reseñable_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "calificacion": {
+                                        "description": "Calificación de 1 a 5",
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "comentario": {
+                                        "type": "string",
+                                        "example": "¡Excelente producto, lo recomiendo!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Reseña creada y pendiente de aprobación."
+                    },
+                    "403": {
+                        "description": "No autorizado (ej. si un admin intenta crear una reseña)."
+                    },
+                    "422": {
+                        "description": "Error de validación."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Client_reseñas/reseñas/{id}": {
+            "put": {
+                "tags": [
+                    "Reseñas (Cliente)"
+                ],
+                "summary": "Actualizar mi reseña (solo clientes)",
+                "operationId": "8603cb4a2a13f59a80f3dee3b8600883",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Campos a actualizar de la reseña",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "calificacion": {
+                                        "type": "integer",
+                                        "example": 4
+                                    },
+                                    "comentario": {
+                                        "type": "string",
+                                        "example": "Este es mi comentario actualizado."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Reseña actualizada y pendiente de reaprobación."
+                    },
+                    "403": {
+                        "description": "No autorizado."
+                    },
+                    "404": {
+                        "description": "Reseña no encontrada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Reseñas (Cliente)"
+                ],
+                "summary": "Eliminar mi reseña (solo clientes)",
+                "operationId": "42ad09f8e414b105fc7eaaecfdfbf690",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Reseña eliminada."
+                    },
+                    "403": {
+                        "description": "No autorizado."
+                    },
+                    "404": {
+                        "description": "Reseña no encontrada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Client_reseñas/reseñas/{id}/aprobar": {
+            "put": {
+                "tags": [
+                    "Reseñas (Admin)"
+                ],
+                "summary": "Aprobar una reseña pendiente (Admins)",
+                "operationId": "3dea773ca180a312c69c53a613db35ff",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Reseña aprobada exitosamente."
+                    },
+                    "404": {
+                        "description": "Reseña no encontrada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Client_usuarios/auth/register": {
             "post": {
                 "tags": [
@@ -3746,6 +3983,18 @@
         {
             "name": "Recordatorios",
             "description": "Recordatorios"
+        },
+        {
+            "name": "Reseñas (Público)",
+            "description": "Reseñas (Público)"
+        },
+        {
+            "name": "Reseñas (Cliente)",
+            "description": "Reseñas (Cliente)"
+        },
+        {
+            "name": "Reseñas (Admin)",
+            "description": "Reseñas (Admin)"
         },
         {
             "name": "Autenticación",
