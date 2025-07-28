@@ -4,42 +4,39 @@ declare(strict_types=1);
 
 namespace Src\Client\usuarios\application\Auth\Command;
 
-final class RegisterUsuarioCommand
+class RegisterUsuarioCommand
 {
-    private string $nombre;
-    private string $email;
-    private string $password;
-    private ?string $telefono;
-
     public function __construct(
-        string $nombre,
-        string $email,
-        string $password,
-        ?string $telefono = null
+        private readonly string $nombre,
+        private readonly string $email,
+        private readonly string $password,
+        private readonly ?string $telefono = null,
+        private readonly ?string $imagen_path = null
     ) {
-        $this->nombre = $nombre;
-        $this->email = $email;
-        $this->password = $password;
-        $this->telefono = $telefono;
     }
 
-    public function nombre(): string
+    public function getNombre(): string
     {
         return $this->nombre;
     }
 
-    public function email(): string
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function password(): string
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    public function telefono(): ?string
+    public function getTelefono(): ?string
     {
         return $this->telefono;
     }
-} 
+
+    public function getImagenPath(): ?string
+    {
+        return $this->imagen_path;
+    }
+}

@@ -6,11 +6,13 @@ namespace Src\Client\usuarios\domain\ValueObjects;
 
 class UsuarioId
 {
-    private int $value;
+    private ?int $value;
 
-    public function __construct(int $value)
+    public function __construct(?int $value)
     {
-        $this->validate($value);
+        if (null !== $value) {
+            $this->validate($value);
+        }
         $this->value = $value;
     }
 
@@ -21,7 +23,7 @@ class UsuarioId
         }
     }
 
-    public function value(): int
+    public function value(): ?int
     {
         return $this->value;
     }

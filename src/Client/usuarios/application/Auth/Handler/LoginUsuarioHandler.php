@@ -62,6 +62,7 @@ final class LoginUsuarioHandler
         } catch (UsuarioNotFoundException | InvalidCredentialsException $e) {
             throw $e;
         } catch (\Throwable $e) {
+            \Log::error('Error en LoginUsuarioHandler: ' . $e->getMessage() . ' Stacktrace: ' . $e->getTraceAsString());
             throw $e;
         }
     }

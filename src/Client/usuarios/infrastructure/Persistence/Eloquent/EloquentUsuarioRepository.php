@@ -15,24 +15,21 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
 {
     public function __construct(private UsuarioModel $model) {}
 
-    public function save(Usuario $usuario): Usuario // Implementar el tipo de retorno
+    public function save(Usuario $usuario): Usuario
     {
-        // Tu lógica actual de `create` ya es buena, pero ahora la usamos para crear el modelo
-        // y luego lo convertimos de nuevo a la entidad para devolverla.
-        // Asumimos que la entidad $usuario ya tiene el password hasheado.
         $model = $this->model->create([
             'nombre' => $usuario->nombre()->value(),
             'email' => $usuario->email()->value(),
-            'password' => $usuario->password()->value(), // La entidad debe tenerlo hasheado
+            'password' => $usuario->password()->value(),
             'telefono' => $usuario->telefono(),
             'rol' => $usuario->rol(),
             'activo' => $usuario->activo(),
             'imagen_path' => $usuario->imagenPath(),
-            'musica_preferencia_navegacion_id' => $usuario->musicaPreferenciaNavegacionId(),
-            'sucursal_preferida_id' => $usuario->sucursalPreferidaId()
         ]);
 
-        // Convertir el modelo Eloquent (que ahora tiene ID) de nuevo a tu entidad de dominio
+        // Recargamos el modelo para obtener el ID asignado por la base de datos.
+        $model->refresh();
+
         return $this->toEntity($model);
     }
 
@@ -73,8 +70,6 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
             'rol' => $usuario->rol(),
             'activo' => $usuario->activo(),
             'imagen_path' => $usuario->imagenPath(),
-            'musica_preferencia_navegacion_id' => $usuario->musicaPreferenciaNavegacionId(),
-            'sucursal_preferida_id' => $usuario->sucursalPreferidaId()
         ]);
     }
 
@@ -93,9 +88,7 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
             $model->telefono,
             $model->rol,
             $model->activo,
-            $model->imagen_path,
-            $model->musica_preferencia_navegacion_id,
-            $model->sucursal_preferida_id
+            $model->imagen_path
         );
     }
-} 
+}

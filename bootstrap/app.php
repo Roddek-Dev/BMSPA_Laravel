@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
     })->withProviders([
+        Src\Client\usuarios\infrastructure\Providers\UsuarioDomainServiceProvider::class,
         Src\Admin\categorias\infrastructure\Providers\CategoriaServiceProvider::class,
         Src\Admin\especialidades\infrastructure\Providers\EspecialidadServiceProvider::class,
         Src\Admin\sucursales\infrastructure\Providers\SucursalServiceProvider::class,

@@ -11,8 +11,7 @@ use Src\Client\usuarios\domain\ValueObjects\PasswordHashed;
 
 class Usuario
 {
-    private ?UsuarioId $id; // Hazlo nulable
-
+    private ?UsuarioId $id;
     private NombreUsuario $nombre;
     private EmailUsuario $email;
     private PasswordHashed $password;
@@ -20,20 +19,16 @@ class Usuario
     private string $rol;
     private bool $activo;
     private ?string $imagen_path;
-    private ?int $musica_preferencia_navegacion_id;
-    private ?int $sucursal_preferida_id;
 
     public function __construct(
-        ?UsuarioId $id, // Acepta null
+        ?UsuarioId $id,
         NombreUsuario $nombre,
         EmailUsuario $email,
         PasswordHashed $password,
         ?string $telefono = null,
         string $rol = 'CLIENTE',
         bool $activo = true,
-        ?string $imagen_path = null,
-        ?int $musica_preferencia_navegacion_id = null,
-        ?int $sucursal_preferida_id = null
+        ?string $imagen_path = null
     ) {
         $this->id = $id;
         $this->nombre = $nombre;
@@ -43,13 +38,11 @@ class Usuario
         $this->rol = $rol;
         $this->activo = $activo;
         $this->imagen_path = $imagen_path;
-        $this->musica_preferencia_navegacion_id = $musica_preferencia_navegacion_id;
-        $this->sucursal_preferida_id = $sucursal_preferida_id;
     }
 
     public function id(): ?UsuarioId
     {
-        return $this->id; //
+        return $this->id;
     }
 
     public function nombre(): NombreUsuario
@@ -87,22 +80,10 @@ class Usuario
         return $this->imagen_path;
     }
 
-    public function musicaPreferenciaNavegacionId(): ?int
-    {
-        return $this->musica_preferencia_navegacion_id;
-    }
-
-    public function sucursalPreferidaId(): ?int
-    {
-        return $this->sucursal_preferida_id;
-    }
-
     public function actualizarPerfil(
         ?string $nombre = null,
         ?string $telefono = null,
-        ?string $imagen_path = null,
-        ?int $musica_preferencia_navegacion_id = null,
-        ?int $sucursal_preferida_id = null
+        ?string $imagen_path = null
     ): void {
         if ($nombre !== null) {
             $this->nombre = new NombreUsuario($nombre);
@@ -112,12 +93,6 @@ class Usuario
         }
         if ($imagen_path !== null) {
             $this->imagen_path = $imagen_path;
-        }
-        if ($musica_preferencia_navegacion_id !== null) {
-            $this->musica_preferencia_navegacion_id = $musica_preferencia_navegacion_id;
-        }
-        if ($sucursal_preferida_id !== null) {
-            $this->sucursal_preferida_id = $sucursal_preferida_id;
         }
     }
 
@@ -135,4 +110,4 @@ class Usuario
     {
         $this->activo = true;
     }
-} 
+}

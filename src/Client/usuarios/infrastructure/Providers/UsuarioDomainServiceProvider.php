@@ -6,10 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Src\Client\usuarios\domain\Repositories\UsuarioRepositoryInterface;
 use Src\Client\usuarios\infrastructure\Persistence\Eloquent\EloquentUsuarioRepository;
 use Src\Client\usuarios\domain\Services\PasswordHasherInterface;
-// Elige una implementación para PasswordHasherInterface:
 use Src\Client\usuarios\infrastructure\Services\LaravelPasswordHasher;
-// o si prefieres la versión de Bcrypt directamente (aunque LaravelPasswordHasher ya usa bcrypt por defecto):
-// use App\client\usuarios\domain\Services\BcryptPasswordHasher;
+use Src\Client\usuarios\application\Auth\Handler\RegisterUsuarioHandler;
 
 
 class UsuarioDomainServiceProvider extends ServiceProvider
@@ -21,10 +19,11 @@ class UsuarioDomainServiceProvider extends ServiceProvider
             EloquentUsuarioRepository::class
         );
 
-        $this->app->bind(
-            PasswordHasherInterface::class,
-            LaravelPasswordHasher::class // O la implementación que elijas
-        );
+        $this->app->bind(PasswordHasherInterface::class, LaravelPasswordHasher::class);
+
+        $this->app->when(RegisterUsuarioHandler::class)
+            ->needs(PasswordHasherInterface::class)
+            ->give(LaravelPasswordHasher::class);
     }
 
     public function boot(): void

@@ -7,24 +7,14 @@ namespace Src\Client\usuarios\application\Auth\DTO;
 final class RegisteredUsuarioData
 {
     public function __construct(
-        private int $id,
-        private string $nombre,
-        private string $email
-    ) {}
-
-    public function id(): int
-    {
-        return $this->id;
-    }
-
-    public function nombre(): string
-    {
-        return $this->nombre;
-    }
-
-    public function email(): string
-    {
-        return $this->email;
+        public readonly ?int $id,
+        public readonly string $nombre,
+        public readonly string $email,
+        public readonly ?string $telefono,
+        public readonly string $rol,
+        public readonly bool $activo,
+        public readonly ?string $imagen_path
+    ) {
     }
 
     public function toArray(): array
@@ -32,7 +22,11 @@ final class RegisteredUsuarioData
         return [
             'id' => $this->id,
             'nombre' => $this->nombre,
-            'email' => $this->email
+            'email' => $this->email,
+            'telefono' => $this->telefono,
+            'rol' => $this->rol,
+            'activo' => $this->activo,
+            'imagen_path' => $this->imagen_path,
         ];
     }
-} 
+}

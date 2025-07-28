@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace Src\Client\usuarios\infrastructure\Persistence\Eloquent;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable; // Importar la clase base Authenticatable
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
-use Laravel\Passport\HasApiTokens;
-// Asegúrate que tu clase herede de Authenticatable e implemente JWTSubject si es necesario
+use Illuminate\Notifications\Notifiable;
+
 class UsuarioModel extends Authenticatable implements JWTSubject
 {
-    use HasFactory, HasApiTokens; // Puedes mantener esto si usas factories con este modelo
+    use HasFactory, Notifiable;
 
     protected $table = 'usuarios';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'nombre',
         'email',
@@ -23,18 +28,25 @@ class UsuarioModel extends Authenticatable implements JWTSubject
         'rol',
         'activo',
         'imagen_path',
-        'musica_preferencia_navegacion_id',
-        'sucursal_preferida_id'
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
     protected $hidden = [
         'password',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'activo' => 'boolean',
-        'musica_preferencia_navegacion_id' => 'integer',
-        'sucursal_preferida_id' => 'integer'
+        'email_verified_at' => 'datetime',
     ];
 
     /**
@@ -44,7 +56,7 @@ class UsuarioModel extends Authenticatable implements JWTSubject
      */
     public function getJWTIdentifier()
     {
-        return $this->getKey(); // Devuelve la clave primaria del modelo
+        return $this->getKey();
     }
 
     /**
