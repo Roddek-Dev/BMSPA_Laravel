@@ -6,25 +6,34 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('transacciones_pago', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('orden_id')->nullable()->constrained('ordenes')->onDelete('set null');
-            $table->foreignId('agendamiento_id')->nullable()->constrained('agendamientos')->onDelete('set null');
-            $table->foreignId('cliente_usuario_id')->constrained('usuarios')->onDelete('restrict');
+            // La transacción ahora solo se relaciona con órdenes de productos
+            $table->foreignId('orden_id')->constrained('ordenes')->onDelete('cascade');
+            $table->foreignId('cliente_usuario_id')->constrained('usuarios');
+            
             $table->decimal('monto', 10, 2);
             $table->string('moneda', 10)->default('MXN');
-            $table->string('metodo_pago', 100);
-            $table->string('id_transaccion_pasarela', 255)->nullable()->unique();
+            $table->string('metodo_pago', 100)->comment('Ej: paypal, mercadopago');
+            $table->string('id_transaccion_pasarela')->unique()->nullable();
             $table->string('estado_pago', 50)->comment('Ej: PENDIENTE, COMPLETADO, FALLIDO, REEMBOLSADO');
             $table->dateTime('fecha_transaccion')->useCurrent();
+            
             $table->json('datos_pasarela_request')->nullable();
             $table->json('datos_pasarela_response')->nullable();
+            
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('transacciones_pago');
