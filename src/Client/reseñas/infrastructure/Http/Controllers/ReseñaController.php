@@ -16,16 +16,15 @@ use Src\Catalog\servicios\infrastructure\Models\ServicioModel;
 use Src\Catalog\productos\infrastructure\Models\ProductoModel;
 use OpenApi\Annotations as OA;
 use Carbon\Carbon;
+use Src\Client\reseñas\infrastructure\Models\ReseñaModel;
 
 class ReseñaController extends Controller
 {
-    public function __construct(private readonly ReseñaService $service)
-    {
-    }
+    public function __construct(private readonly ReseñaService $service) {}
 
     /**
      * @OA\Get(
-     * path="/api/Client_reseñas/reseñas/public",
+     * path="/api/Client_reseñas/reviews/public",
      * tags={"Reseñas (Público)"},
      * summary="Obtener todas las reseñas aprobadas de un item",
      * @OA\Parameter(name="type", in="query", required=true, description="Tipo de item a reseñar", @OA\Schema(type="string", enum={"sucursal", "servicio", "producto"})),
@@ -45,17 +44,17 @@ class ReseñaController extends Controller
             'servicio' => ServicioModel::class,
             'producto' => ProductoModel::class,
         ];
-        
+
         $itemTypeClass = $typeMap[$validated['type']];
         $itemId = $validated['id'];
 
         $reseñas = $this->service->findAllApprovedByItem($itemTypeClass, $itemId);
         return response()->json($reseñas);
     }
-    
+
     /**
      * @OA\Get(
-     * path="/api/Client_reseñas/reseñas",
+     * path="/api/Client_reseñas/reviews",
      * tags={"Reseñas (Cliente)"},
      * summary="Obtener mis reseñas",
      * security={{"bearerAuth":{}}},
@@ -71,7 +70,7 @@ class ReseñaController extends Controller
 
     /**
      * @OA\Post(
-     * path="/api/Client_reseñas/reseñas",
+     * path="/api/Client_reseñas/reviews",
      * tags={"Reseñas (Cliente)"},
      * summary="Crear una nueva reseña (solo clientes)",
      * security={{"bearerAuth":{}}},
@@ -103,7 +102,7 @@ class ReseñaController extends Controller
         ];
         $reseñableClass = $typeMap[$data['reseñable_type']];
         $validator = Validator::make($data, [
-            'reseñable_id' => [ Rule::exists($reseñableClass, 'id')->whereNull('deleted_at') ]
+            'reseñable_id' => [Rule::exists($reseñableClass, 'id')->whereNull('deleted_at')]
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -118,7 +117,7 @@ class ReseñaController extends Controller
 
     /**
      * @OA\Put(
-     * path="/api/Client_reseñas/reseñas/{id}",
+     * path="/api/Client_reseñas/reviews/{id}",
      * tags={"Reseñas (Cliente)"},
      * summary="Actualizar mi reseña (solo clientes)",
      * security={{"bearerAuth":{}}},
@@ -155,7 +154,7 @@ class ReseñaController extends Controller
 
     /**
      * @OA\Delete(
-     * path="/api/Client_reseñas/reseñas/{id}",
+     * path="/api/Client_reseñas/reviews/{id}",
      * tags={"Reseñas (Cliente)"},
      * summary="Eliminar mi reseña (solo clientes)",
      * security={{"bearerAuth":{}}},
@@ -182,27 +181,33 @@ class ReseñaController extends Controller
 
     /**
      * @OA\Put(
-     * path="/api/Client_reseñas/reseñas/{id}/aprobar",
+     * path="/api/Client_reseñas/reviews/{reseña}/aprobar",
      * tags={"Reseñas (Admin)"},
      * summary="Aprobar una reseña pendiente (Admins)",
      * security={{"bearerAuth":{}}},
-     * @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     * @OA\Parameter(name="reseña", in="path", required=true, @OA\Schema(type="integer")),
      * @OA\Response(response=204, description="Reseña aprobada exitosamente."),
      * @OA\Response(response=404, description="Reseña no encontrada.")
      * )
      */
-    public function approve(Request $request, $id): JsonResponse
+    public function approve(Request $request, ReseñaModel $reseña): JsonResponse
     {
-        $reseñaId = (int) $id;
-        $reseñaModel = $this->service->findById($reseñaId);
+        // No necesitas buscar la reseña, Laravel ya lo hizo por ti.
+        // Si no la encuentra, ya habría devuelto un 404.
 
-        if (!$reseñaModel) {
-            return response()->json(['message' => 'Reseña no encontrada'], 404);
-        }
+        $approvedReseña = new Reseña(
+            $reseña->id,
+            $reseña->cliente_usuario_id,
+            $reseña->reseñable_type,
+            $reseña->reseñable_id,
+            $reseña->calificacion,
+            $reseña->comentario,
+            true, // <-- El cambio clave: se aprueba la reseña
+            $reseña->fecha_reseña->toDateTimeString()
+        );
 
-        $approvedReseña = new Reseña($reseñaId, $reseñaModel->cliente_usuario_id, $reseñaModel->reseñable_type, $reseñaModel->reseñable_id, $reseñaModel->calificacion, $reseñaModel->comentario, true, $reseñaModel->fecha_reseña);
-        $this->service->update($reseñaId, $approvedReseña);
-        
+        $this->service->update($reseña->id, $approvedReseña);
+
         return response()->json(null, 204);
     }
 }

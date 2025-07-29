@@ -85,4 +85,23 @@ class EloquentAgendamientoRepository implements AgendamientoRepository
     {
         AgendamientoModel::findOrFail($id)->delete();
     }
+
+    public function hasConflict(int $sucursalId, ?int $personalId, string $fechaHoraInicio, string $fechaHoraFin): bool
+    {
+        $query = AgendamientoModel::where('sucursal_id', $sucursalId)
+            ->where(function ($query) use ($fechaHoraInicio, $fechaHoraFin) {
+                // Validación de solapamiento de tiempo: (start_time_existente < end_time_nuevo) AND (end_time_existente > start_time_nuevo)
+                $query->where(function ($q) use ($fechaHoraInicio, $fechaHoraFin) {
+                    $q->where('fecha_hora_inicio', '<', $fechaHoraFin)
+                        ->where('fecha_hora_fin', '>', $fechaHoraInicio);
+                });
+            });
+
+        // Si se especifica personal_id, también validar contra el mismo personal
+        if ($personalId !== null) {
+            $query->where('personal_id', $personalId);
+        }
+
+        return $query->exists();
+    }
 }

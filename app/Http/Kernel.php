@@ -28,7 +28,9 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            // API middleware group
+            \Illuminate\Http\Middleware\HandleCors::class,
+            \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
+            \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         ],
     ];
 
@@ -52,6 +54,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'check.role' => \Src\Client\usuarios\infrastructure\Http\Middleware\CheckRole::class,
+        'multiple_roles' => \Src\Client\usuarios\infrastructure\Http\Middleware\CheckMultipleRoles::class,
     ];
 
     /**
@@ -61,6 +64,5 @@ class Kernel extends HttpKernel
      *
      * @var array<string, class-string|string>
      */
-    protected $routeMiddleware = [
-    ];
-} 
+    protected $routeMiddleware = [];
+}

@@ -794,6 +794,165 @@
                 ]
             }
         },
+        "/api/Admin_personal/usuarios/{usuarioId}/promover-a-empleado": {
+            "post": {
+                "tags": [
+                    "Promociones Personal"
+                ],
+                "summary": "Promover cliente a empleado",
+                "description": "Promueve un cliente a empleado en la sucursal del administrador",
+                "operationId": "04f19c7ea3795026d7c1cb4bb93df9a6",
+                "parameters": [
+                    {
+                        "name": "usuarioId",
+                        "in": "path",
+                        "description": "ID del usuario cliente a promover",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "sucursal_asignada_id": {
+                                        "description": "ID de la sucursal (solo para GERENTE)",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuario promovido exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario promovido a empleado exitosamente."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Usuario ya es empleado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El usuario ya es empleado."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Acceso denegado"
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Admin_personal/personal/{personalId}/promover-a-admin": {
+            "post": {
+                "tags": [
+                    "Promociones Personal"
+                ],
+                "summary": "Promover empleado a administrador de sucursal",
+                "description": "Promueve un empleado a administrador de sucursal (solo GERENTE)",
+                "operationId": "4ed08f37b7de087928004a707542f811",
+                "parameters": [
+                    {
+                        "name": "personalId",
+                        "in": "path",
+                        "description": "ID del registro de personal a promover",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Empleado promovido exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Empleado promovido a Administrador de Sucursal exitosamente."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Acceso denegado - Solo GERENTE puede realizar esta acción",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No tienes permisos para realizar esta acción."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Personal no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Personal no encontrado."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admin_promociones/promociones": {
             "get": {
                 "tags": [
@@ -1238,7 +1397,7 @@
                     "Sucursales"
                 ],
                 "summary": "Actualizar una sucursal",
-                "operationId": "ecb7d93e5d8a655b316ec008329e24b0",
+                "operationId": "6e03bf40998dcbadad55bd3a8e8ee299",
                 "parameters": [
                     {
                         "name": "id",
@@ -2215,189 +2374,6 @@
                 ]
             }
         },
-        "/api/Client_musica_preferencias/preferencias": {
-            "get": {
-                "tags": [
-                    "Preferencias de Música"
-                ],
-                "summary": "Obtener todas las preferencias de música",
-                "operationId": "c0f6ecc3fdaea4f2bccbccc7a9dd7c99",
-                "responses": {
-                    "200": {
-                        "description": "Lista de preferencias de música"
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Preferencias de Música"
-                ],
-                "summary": "Crear una nueva preferencia de música",
-                "operationId": "f97b91099ca6ec3b12b942604dec80bd",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "nombre_opcion": {
-                                        "type": "string",
-                                        "example": "Rock Clásico"
-                                    },
-                                    "descripcion": {
-                                        "type": "string",
-                                        "example": "Lo mejor de los 70s y 80s."
-                                    },
-                                    "stream_url_ejemplo": {
-                                        "type": "string",
-                                        "format": "url",
-                                        "example": "https://example.com/stream/rock.mp3"
-                                    },
-                                    "activo": {
-                                        "type": "boolean",
-                                        "example": true
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Preferencia creada exitosamente.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Preferencia de música creada exitosamente"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Error de validación"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/Client_musica_preferencias/preferencias/{id}": {
-            "get": {
-                "tags": [
-                    "Preferencias de Música"
-                ],
-                "summary": "Obtener una preferencia por ID",
-                "operationId": "b2b9d532e60b4a2264d63cdc2a15a785",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Detalles de la preferencia"
-                    },
-                    "404": {
-                        "description": "Preferencia no encontrada"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Preferencias de Música"
-                ],
-                "summary": "Actualizar una preferencia de música",
-                "operationId": "a66b979688fa3f5b49c2eb3b7af06cf8",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "nombre_opcion": {
-                                        "type": "string",
-                                        "example": "Pop Latino"
-                                    },
-                                    "activo": {
-                                        "type": "boolean",
-                                        "example": false
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "204": {
-                        "description": "Preferencia actualizada"
-                    },
-                    "404": {
-                        "description": "Preferencia no encontrada"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "Preferencias de Música"
-                ],
-                "summary": "Eliminar una preferencia de música",
-                "operationId": "e13121bad2f77c0bb9fba91ab8177ac8",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Preferencia eliminada"
-                    },
-                    "404": {
-                        "description": "Preferencia no encontrada"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
         "/api/Client_ordenes/ordenes": {
             "get": {
                 "tags": [
@@ -2420,7 +2396,7 @@
                 "tags": [
                     "Órdenes de Cliente"
                 ],
-                "summary": "Crear una nueva orden con sus detalles",
+                "summary": "Crear una nueva orden con sus detalles e iniciar pago con Mercado Pago",
                 "operationId": "f621137a67f7bdba14e453e517564852",
                 "requestBody": {
                     "required": true,
@@ -2456,7 +2432,28 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Orden creada exitosamente."
+                        "description": "Orden creada y preferencia de pago generada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Orden creada, pendiente de pago."
+                                        },
+                                        "orden_id": {
+                                            "type": "integer",
+                                            "example": 123
+                                        },
+                                        "preference_id": {
+                                            "type": "string",
+                                            "example": "PREFERENCIA_GENERADA_POR_MP"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
                         "description": "Error de validación."
@@ -2797,13 +2794,13 @@
                 ]
             }
         },
-        "/api/Client_reseñas/reseñas/public": {
+        "/api/Client_reseñas/reviews/public": {
             "get": {
                 "tags": [
                     "Reseñas (Público)"
                 ],
                 "summary": "Obtener todas las reseñas aprobadas de un item",
-                "operationId": "1cd882adbdfa7fa8a0d32d823b06eb4e",
+                "operationId": "6535a95b2a0fa4b04572419d57ca6a9d",
                 "parameters": [
                     {
                         "name": "type",
@@ -2836,13 +2833,13 @@
                 }
             }
         },
-        "/api/Client_reseñas/reseñas": {
+        "/api/Client_reseñas/reviews": {
             "get": {
                 "tags": [
                     "Reseñas (Cliente)"
                 ],
                 "summary": "Obtener mis reseñas",
-                "operationId": "8ed08e568ec4a841e4fbd09bee0dabcd",
+                "operationId": "d29c5737b2ea526c5f701e5533cbe37a",
                 "responses": {
                     "200": {
                         "description": "Lista de mis reseñas."
@@ -2859,7 +2856,7 @@
                     "Reseñas (Cliente)"
                 ],
                 "summary": "Crear una nueva reseña (solo clientes)",
-                "operationId": "48b863ed5f5df564193374c953337690",
+                "operationId": "c8f2deff8ed0bcdc6fdcc4c676c76b7e",
                 "requestBody": {
                     "description": "Datos para crear la nueva reseña",
                     "required": true,
@@ -2913,13 +2910,13 @@
                 ]
             }
         },
-        "/api/Client_reseñas/reseñas/{id}": {
+        "/api/Client_reseñas/reviews/{id}": {
             "put": {
                 "tags": [
                     "Reseñas (Cliente)"
                 ],
                 "summary": "Actualizar mi reseña (solo clientes)",
-                "operationId": "8603cb4a2a13f59a80f3dee3b8600883",
+                "operationId": "5ef2953f471ec8e08e8ab5dcba6e96ed",
                 "parameters": [
                     {
                         "name": "id",
@@ -2973,7 +2970,7 @@
                     "Reseñas (Cliente)"
                 ],
                 "summary": "Eliminar mi reseña (solo clientes)",
-                "operationId": "42ad09f8e414b105fc7eaaecfdfbf690",
+                "operationId": "43784253e2d118e14b32a9a3e79f63b7",
                 "parameters": [
                     {
                         "name": "id",
@@ -3002,16 +2999,16 @@
                 ]
             }
         },
-        "/api/Client_reseñas/reseñas/{id}/aprobar": {
+        "/api/Client_reseñas/reviews/{reseña}/aprobar": {
             "put": {
                 "tags": [
                     "Reseñas (Admin)"
                 ],
                 "summary": "Aprobar una reseña pendiente (Admins)",
-                "operationId": "3dea773ca180a312c69c53a613db35ff",
+                "operationId": "ddfbd9674fe74af5341af841cb1f5bf2",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "reseña",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -3040,7 +3037,7 @@
                     "Autenticación"
                 ],
                 "summary": "Registrar un nuevo usuario",
-                "description": "Crea una nueva cuenta de usuario en el sistema.",
+                "description": "Crea una nueva cuenta de usuario en el sistema con rol CLIENTE por defecto.",
                 "operationId": "bd3d82e28a2ee3fdd4df3331684f92d6",
                 "requestBody": {
                     "description": "Datos del usuario para el registro",
@@ -3056,25 +3053,30 @@
                                 ],
                                 "properties": {
                                     "nombre": {
+                                        "description": "Nombre completo del usuario",
                                         "type": "string",
                                         "example": "Juan Pérez"
                                     },
                                     "email": {
+                                        "description": "Email único del usuario",
                                         "type": "string",
                                         "format": "email",
                                         "example": "juan.perez@example.com"
                                     },
                                     "password": {
+                                        "description": "Contraseña mínima 8 caracteres",
                                         "type": "string",
                                         "format": "password",
-                                        "example": "Password123"
+                                        "example": "password123"
                                     },
                                     "password_confirmation": {
+                                        "description": "Confirmación de contraseña",
                                         "type": "string",
                                         "format": "password",
-                                        "example": "Password123"
+                                        "example": "password123"
                                     },
                                     "telefono": {
+                                        "description": "Teléfono único del usuario",
                                         "type": "string",
                                         "example": "3101234567"
                                     }
@@ -3086,7 +3088,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Usuario registrado exitosamente.",
+                        "description": "Usuario registrado exitosamente",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3096,6 +3098,48 @@
                                             "example": "Usuario registrado exitosamente"
                                         },
                                         "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre": {
+                                                    "type": "string",
+                                                    "example": "Juan Pérez"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "juan.perez@example.com"
+                                                },
+                                                "rol": {
+                                                    "type": "string",
+                                                    "example": "CLIENTE"
+                                                },
+                                                "activo": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Los datos proporcionados no son válidos"
+                                        },
+                                        "errors": {
                                             "type": "object"
                                         }
                                     },
@@ -3105,30 +3149,14 @@
                         }
                     },
                     "409": {
-                        "description": "El usuario ya existe (Conflicto).",
+                        "description": "Email o teléfono ya existe",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "El correo electrónico ya ha sido registrado."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Datos de entrada inválidos.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "La contraseña debe tener al menos 8 caracteres."
+                                            "example": "El email ya está registrado"
                                         }
                                     },
                                     "type": "object"
@@ -3145,7 +3173,7 @@
                     "Autenticación"
                 ],
                 "summary": "Iniciar sesión",
-                "description": "Autentica a un usuario y devuelve un token de acceso.",
+                "description": "Autentica a un usuario y devuelve un token JWT de acceso.",
                 "operationId": "6434578a4ee2600ce974162a0ae2ad10",
                 "requestBody": {
                     "description": "Credenciales del usuario",
@@ -3159,14 +3187,16 @@
                                 ],
                                 "properties": {
                                     "email": {
+                                        "description": "Email del usuario",
                                         "type": "string",
                                         "format": "email",
                                         "example": "juan.perez@example.com"
                                     },
                                     "password": {
+                                        "description": "Contraseña del usuario",
                                         "type": "string",
                                         "format": "password",
-                                        "example": "Password123"
+                                        "example": "password123"
                                     }
                                 },
                                 "type": "object"
@@ -3176,7 +3206,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Login exitoso.",
+                        "description": "Login exitoso",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3187,13 +3217,20 @@
                                         },
                                         "data": {
                                             "properties": {
-                                                "access_token": {
+                                                "token": {
+                                                    "description": "Token JWT para autenticación",
                                                     "type": "string",
-                                                    "example": "1|aBcDeFgHiJkLmNoPqRsTuVwXyZ123456"
+                                                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                                                 },
-                                                "token_type": {
+                                                "type": {
+                                                    "description": "Tipo de token",
                                                     "type": "string",
-                                                    "example": "Bearer"
+                                                    "example": "bearer"
+                                                },
+                                                "expires_in": {
+                                                    "description": "Tiempo de expiración en segundos",
+                                                    "type": "integer",
+                                                    "example": 3600
                                                 }
                                             },
                                             "type": "object"
@@ -3205,14 +3242,33 @@
                         }
                     },
                     "401": {
-                        "description": "Credenciales inválidas.",
+                        "description": "Credenciales inválidas",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Las credenciales proporcionadas son incorrectas."
+                                            "example": "Credenciales inválidas"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Los datos proporcionados no son válidos"
+                                        },
+                                        "errors": {
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -3223,17 +3279,17 @@
                 }
             }
         },
-        "/api@": {
+        "/api/Client_usuarios/auth/logout": {
             "post": {
                 "tags": [
                     "Autenticación"
                 ],
                 "summary": "Cerrar sesión",
-                "description": "Invalida el token de acceso del usuario actual.",
-                "operationId": "26757f380a912730a492cf223ce25b97",
+                "description": "Invalida el token JWT del usuario actual y cierra la sesión.",
+                "operationId": "b13a621f374058794df35f93bf4a0f2e",
                 "responses": {
                     "200": {
-                        "description": "Sesión cerrada exitosamente.",
+                        "description": "Sesión cerrada exitosamente",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3249,14 +3305,30 @@
                         }
                     },
                     "401": {
-                        "description": "No autenticado (token no válido o no proporcionado).",
+                        "description": "No autenticado",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Unauthenticated."
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error al cerrar sesión"
                                         }
                                     },
                                     "type": "object"
@@ -3272,26 +3344,58 @@
                 ]
             }
         },
-        "/api/Client_usuarios/auth/test-cliente": {
+        "/api/Client_usuarios/profile": {
             "get": {
                 "tags": [
-                    "Roles de Prueba"
+                    "Usuario"
                 ],
-                "summary": "Probar acceso con rol de Cliente",
-                "description": "Endpoint para verificar si el usuario autenticado tiene acceso como cliente.",
-                "operationId": "8c57945fdc46cee42a2aad3441888446",
+                "summary": "Obtener perfil del usuario autenticado",
+                "description": "Retorna la información del perfil del usuario actualmente autenticado.",
+                "operationId": "2b90d7014368516896e268af8e8b3757",
                 "responses": {
                     "200": {
-                        "description": "Acceso permitido.",
+                        "description": "Perfil obtenido exitosamente",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Acceso permitido para clientes"
+                                            "example": "Perfil obtenido exitosamente"
                                         },
-                                        "user": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre": {
+                                                    "type": "string",
+                                                    "example": "Juan Pérez"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "juan.perez@example.com"
+                                                },
+                                                "telefono": {
+                                                    "type": "string",
+                                                    "example": "3101234567"
+                                                },
+                                                "rol": {
+                                                    "type": "string",
+                                                    "example": "CLIENTE"
+                                                },
+                                                "activo": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "imagen_path": {
+                                                    "type": "string",
+                                                    "example": "uploads/avatars/user1.jpg",
+                                                    "nullable": true
+                                                }
+                                            },
                                             "type": "object"
                                         }
                                     },
@@ -3301,10 +3405,95 @@
                         }
                     },
                     "401": {
-                        "description": "No autenticado."
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Usuario"
+                ],
+                "summary": "Actualizar perfil del usuario",
+                "description": "Actualiza la información del perfil del usuario autenticado.",
+                "operationId": "09f6def11b2d34722d8ddad00d5a981d",
+                "requestBody": {
+                    "description": "Datos del perfil a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Juan Carlos Pérez"
+                                    },
+                                    "telefono": {
+                                        "type": "string",
+                                        "example": "3101234568"
+                                    },
+                                    "imagen_path": {
+                                        "type": "string",
+                                        "example": "uploads/avatars/new-avatar.jpg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Perfil actualizado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Perfil actualizado exitosamente"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nombre": {
+                                                    "type": "string",
+                                                    "example": "Juan Carlos Pérez"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "juan.perez@example.com"
+                                                },
+                                                "telefono": {
+                                                    "type": "string",
+                                                    "example": "3101234568"
+                                                },
+                                                "imagen_path": {
+                                                    "type": "string",
+                                                    "example": "uploads/avatars/new-avatar.jpg"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
-                    "403": {
-                        "description": "Acceso denegado (Forbidden)."
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "401": {
+                        "description": "No autenticado"
                     }
                 },
                 "security": [
@@ -3314,27 +3503,57 @@
                 ]
             }
         },
-        "/api/Client_usuarios/auth/test-empleado": {
-            "get": {
+        "/api/Client_usuarios/profile/change-password": {
+            "post": {
                 "tags": [
-                    "Roles de Prueba"
+                    "Usuario"
                 ],
-                "summary": "Probar acceso con rol de Empleado",
-                "description": "Endpoint para verificar si el usuario autenticado tiene acceso como empleado.",
-                "operationId": "6c4d3ad7d8c55e7b574f9d3612e4163f",
+                "summary": "Cambiar contraseña del usuario",
+                "description": "Permite al usuario cambiar su contraseña actual.",
+                "operationId": "2fc2554cbd4b375db690d3b5d936ab0c",
+                "requestBody": {
+                    "description": "Datos para cambiar contraseña",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "current_password",
+                                    "new_password",
+                                    "new_password_confirmation"
+                                ],
+                                "properties": {
+                                    "current_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "new_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword123"
+                                    },
+                                    "new_password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Acceso permitido.",
+                        "description": "Contraseña cambiada exitosamente",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Acceso permitido para empleados"
-                                        },
-                                        "user": {
-                                            "type": "object"
+                                            "example": "Contraseña cambiada exitosamente"
                                         }
                                     },
                                     "type": "object"
@@ -3342,11 +3561,11 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "No autenticado."
+                    "422": {
+                        "description": "Error de validación"
                     },
-                    "403": {
-                        "description": "Acceso denegado (Forbidden)."
+                    "401": {
+                        "description": "No autenticado o contraseña actual incorrecta"
                     }
                 },
                 "security": [
@@ -3356,88 +3575,46 @@
                 ]
             }
         },
-        "/api/Client_usuarios/auth/test-admin-sucursal": {
-            "get": {
+        "/api/webhooks/mercadopago-ipn": {
+            "post": {
                 "tags": [
-                    "Roles de Prueba"
+                    "Webhooks"
                 ],
-                "summary": "Probar acceso con rol de Administrador de Sucursal",
-                "description": "Endpoint para verificar si el usuario autenticado tiene acceso como administrador de sucursal.",
-                "operationId": "57909ae926f1a46fe4ecc6f3cf6e1a55",
-                "responses": {
-                    "200": {
-                        "description": "Acceso permitido.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Acceso permitido para administradores de sucursal"
-                                        },
-                                        "user": {
-                                            "type": "object"
-                                        }
+                "summary": "Webhook para recibir notificaciones de Mercado Pago",
+                "operationId": "b874c0b760bd8ed361b927190b1880f4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "example": "payment"
                                     },
-                                    "type": "object"
-                                }
+                                    "data": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "example": "123456789"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
-                    },
-                    "401": {
-                        "description": "No autenticado."
-                    },
-                    "403": {
-                        "description": "Acceso denegado (Forbidden)."
                     }
                 },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/Client_usuarios/auth/test-gerente": {
-            "get": {
-                "tags": [
-                    "Roles de Prueba"
-                ],
-                "summary": "Probar acceso con rol de Gerente",
-                "description": "Endpoint para verificar si el usuario autenticado tiene acceso como gerente.",
-                "operationId": "d97ce0ffe9ec222a9516a4450d43ddda",
                 "responses": {
                     "200": {
-                        "description": "Acceso permitido.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Acceso permitido para gerentes"
-                                        },
-                                        "user": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Notificación procesada correctamente"
                     },
-                    "401": {
-                        "description": "No autenticado."
-                    },
-                    "403": {
-                        "description": "Acceso denegado (Forbidden)."
+                    "400": {
+                        "description": "Error en el procesamiento"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/Scheduling_agendamientos/agendamientos": {
@@ -3463,6 +3640,7 @@
                     "Agendamientos"
                 ],
                 "summary": "Crear un nuevo agendamiento",
+                "description": "Crea un nuevo agendamiento validando conflictos de horario con citas existentes.",
                 "operationId": "dcf1d68c43b8f02cc5d724b099bbae5f",
                 "requestBody": {
                     "required": true,
@@ -3476,7 +3654,8 @@
                                     },
                                     "personal_id": {
                                         "type": "integer",
-                                        "example": 1
+                                        "example": 1,
+                                        "nullable": true
                                     },
                                     "servicio_id": {
                                         "type": "integer",
@@ -3532,6 +3711,26 @@
                             }
                         }
                     },
+                    "409": {
+                        "description": "Conflicto de horario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El horario seleccionado ya no está disponible."
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "CONFLICTO_HORARIO"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "422": {
                         "description": "Error de validación"
                     }
@@ -3579,6 +3778,7 @@
                     "Agendamientos"
                 ],
                 "summary": "Actualizar un agendamiento",
+                "description": "Actualiza un agendamiento existente validando conflictos de horario.",
                 "operationId": "adc34adcdc81643bf352545ec15f8346",
                 "parameters": [
                     {
@@ -3613,6 +3813,26 @@
                 "responses": {
                     "204": {
                         "description": "Agendamiento actualizado"
+                    },
+                    "409": {
+                        "description": "Conflicto de horario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El horario seleccionado ya no está disponible."
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "CONFLICTO_HORARIO"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Agendamiento no encontrado"
@@ -3953,6 +4173,10 @@
             "description": "Personal"
         },
         {
+            "name": "Promociones Personal",
+            "description": "Promociones Personal"
+        },
+        {
             "name": "Promociones",
             "description": "Promociones"
         },
@@ -3971,10 +4195,6 @@
         {
             "name": "Direcciones de Cliente",
             "description": "Direcciones de Cliente"
-        },
-        {
-            "name": "Preferencias de Música",
-            "description": "Preferencias de Música"
         },
         {
             "name": "Órdenes de Cliente",
@@ -4001,8 +4221,12 @@
             "description": "Autenticación"
         },
         {
-            "name": "Roles de Prueba",
-            "description": "Roles de Prueba"
+            "name": "Usuario",
+            "description": "Usuario"
+        },
+        {
+            "name": "Webhooks",
+            "description": "Webhooks"
         },
         {
             "name": "Agendamientos",

@@ -44,8 +44,7 @@ Route::prefix('Client_recordatorios')->group(base_path('src/Client/recordatorios
 // CONTEXTO: Payments
 // Lógica para procesar pagos con pasarelas externas.
 //==========================================================================
-// TODO: Implementar el módulo de pagos. Actualmente los archivos de ruta de ejemplo fueron eliminados.
-// Route::prefix('Payments_transacciones_pago')->group(base_path('src/Payments/transacciones_pago/infrastructure/routes/api.php'));
+Route::prefix('Payments_transacciones_pago')->group(base_path('src/Payments/transacciones_pago/infrastructure/routes/api.php'));
 
 //==========================================================================
 // CONTEXTO: Scheduling
@@ -53,4 +52,3 @@ Route::prefix('Client_recordatorios')->group(base_path('src/Client/recordatorios
 //==========================================================================
 Route::prefix('Scheduling_agendamientos')->group(base_path('src/Scheduling/agendamientos/infrastructure/routes/api.php'));
 Route::prefix('Scheduling_horarios_sucursal')->group(base_path('src/Scheduling/horarios_sucursal/infrastructure/routes/api.php'));
-

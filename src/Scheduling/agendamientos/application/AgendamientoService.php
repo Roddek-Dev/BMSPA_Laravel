@@ -4,12 +4,11 @@ namespace Src\Scheduling\agendamientos\application;
 
 use Src\Scheduling\agendamientos\domain\Repositories\AgendamientoRepository;
 use Src\Scheduling\agendamientos\domain\Entities\Agendamiento;
+use Src\Scheduling\agendamientos\domain\Exception\ConflictHorarioException;
 
 final class AgendamientoService
 {
-    public function __construct(private readonly AgendamientoRepository $repository)
-    {
-    }
+    public function __construct(private readonly AgendamientoRepository $repository) {}
 
     public function findAll(): array
     {
@@ -23,6 +22,18 @@ final class AgendamientoService
 
     public function save(Agendamiento $agendamiento): void
     {
+        // Validar conflictos de horario antes de guardar
+        $hasConflict = $this->repository->hasConflict(
+            $agendamiento->sucursal_id,
+            $agendamiento->personal_id,
+            $agendamiento->fecha_hora_inicio,
+            $agendamiento->fecha_hora_fin
+        );
+
+        if ($hasConflict) {
+            throw new ConflictHorarioException();
+        }
+
         $this->repository->save($agendamiento);
     }
 

@@ -8,6 +8,9 @@ use Src\Client\usuarios\infrastructure\Persistence\Eloquent\EloquentUsuarioRepos
 use Src\Client\usuarios\domain\Services\PasswordHasherInterface;
 use Src\Client\usuarios\infrastructure\Services\LaravelPasswordHasher;
 use Src\Client\usuarios\application\Auth\Handler\RegisterUsuarioHandler;
+use Src\Client\usuarios\application\Auth\Handler\LoginUsuarioHandler;
+use Src\Client\usuarios\application\Profile\Handler\UpdateProfileHandler;
+use Src\Client\usuarios\application\Profile\Handler\ChangePasswordHandler;
 
 
 class UsuarioDomainServiceProvider extends ServiceProvider
@@ -24,10 +27,19 @@ class UsuarioDomainServiceProvider extends ServiceProvider
         $this->app->when(RegisterUsuarioHandler::class)
             ->needs(PasswordHasherInterface::class)
             ->give(LaravelPasswordHasher::class);
+
+        $this->app->when(LoginUsuarioHandler::class)
+            ->needs(PasswordHasherInterface::class)
+            ->give(LaravelPasswordHasher::class);
+
+        $this->app->when(UpdateProfileHandler::class)
+            ->needs(PasswordHasherInterface::class)
+            ->give(LaravelPasswordHasher::class);
+
+        $this->app->when(ChangePasswordHandler::class)
+            ->needs(PasswordHasherInterface::class)
+            ->give(LaravelPasswordHasher::class);
     }
 
-    public function boot(): void
-    {
-        
-    }
+    public function boot(): void {}
 }

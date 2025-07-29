@@ -10,14 +10,16 @@ use Src\Client\ordenes\domain\Entities\Orden;
 use Src\Client\ordenes\infrastructure\Http\Requests\StoreOrdenRequest;
 use Src\Client\ordenes\infrastructure\Http\Requests\UpdateOrdenRequest;
 use Src\Catalog\productos\infrastructure\Models\ProductoModel;
+use Src\Payments\transacciones_pago\application\PagoService;
 use OpenApi\Annotations as OA;
 use Carbon\Carbon;
 
 class OrdenController extends Controller
 {
-    public function __construct(private readonly OrdenService $service)
-    {
-    }
+    public function __construct(
+        private readonly OrdenService $service,
+        private readonly PagoService $pagoService
+    ) {}
 
     /**
      * @OA\Get(
@@ -34,12 +36,12 @@ class OrdenController extends Controller
         $ordenes = $this->service->findAllByClient($clientId);
         return response()->json($ordenes);
     }
-    
+
     /**
      * @OA\Post(
      * path="/api/Client_ordenes/ordenes",
      * tags={"Órdenes de Cliente"},
-     * summary="Crear una nueva orden con sus detalles",
+     * summary="Crear una nueva orden con sus detalles e iniciar pago con Mercado Pago",
      * security={{"bearerAuth":{}}},
      * @OA\RequestBody(
      * required=true,
@@ -51,7 +53,15 @@ class OrdenController extends Controller
      * ))
      * )
      * ),
-     * @OA\Response(response=201, description="Orden creada exitosamente."),
+     * @OA\Response(
+     * response=201,
+     * description="Orden creada y preferencia de pago generada.",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="Orden creada, pendiente de pago."),
+     * @OA\Property(property="orden_id", type="integer", example=123),
+     * @OA\Property(property="preference_id", type="string", example="PREFERENCIA_GENERADA_POR_MP")
+     * )
+     * ),
      * @OA\Response(response=422, description="Error de validación.")
      * )
      */
@@ -59,7 +69,7 @@ class OrdenController extends Controller
     {
         $validatedData = $request->validated();
         $detallesInput = $validatedData['detalles'];
-        
+
         $subtotal = 0;
         $detallesParaGuardar = [];
 
@@ -96,16 +106,33 @@ class OrdenController extends Controller
             'PENDIENTE_PAGO',
             $validatedData['notas_orden'] ?? null
         );
-        
+
         // 4. Guardar la orden y sus detalles
         $ordenGuardada = $this->service->save($orden, $detallesParaGuardar);
-        
-        return response()->json([
-            'message' => 'Orden creada exitosamente',
-            'orden' => $ordenGuardada
-        ], 201);
+
+        // 5. Obtener el modelo OrdenModel para Mercado Pago
+        $ordenModel = \Src\Client\ordenes\infrastructure\Models\OrdenModel::with('detalles')->find($ordenGuardada->id);
+
+        // 6. Crear preferencia de pago en Mercado Pago
+        try {
+            $preferenciaPago = $this->pagoService->crearPreferenciaPago($ordenModel);
+
+            return response()->json([
+                'message' => 'Orden creada, pendiente de pago.',
+                'orden_id' => $ordenGuardada->id,
+                'preference_id' => $preferenciaPago['preference_id']
+            ], 201);
+        } catch (\Exception $e) {
+            // Si falla la creación de la preferencia, aún devolvemos la orden creada
+            // pero con un mensaje de advertencia
+            return response()->json([
+                'message' => 'Orden creada pero hubo un problema con el pago. Contacte al administrador.',
+                'orden_id' => $ordenGuardada->id,
+                'error' => 'Error al generar preferencia de pago'
+            ], 201);
+        }
     }
-    
+
     /**
      * @OA\Get(
      * path="/api/Client_ordenes/ordenes/{id}",
@@ -126,7 +153,7 @@ class OrdenController extends Controller
         }
         return response()->json($orden);
     }
-    
+
     /**
      * @OA\Put(
      * path="/api/Client_ordenes/ordenes/{id}",

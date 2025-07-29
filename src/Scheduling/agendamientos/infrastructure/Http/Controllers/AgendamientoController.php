@@ -6,15 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Src\Scheduling\agendamientos\application\AgendamientoService;
 use Src\Scheduling\agendamientos\domain\Entities\Agendamiento;
+use Src\Scheduling\agendamientos\domain\Exception\ConflictHorarioException;
 use Src\Scheduling\agendamientos\infrastructure\Http\Requests\StoreAgendamientoRequest;
 use Src\Scheduling\agendamientos\infrastructure\Http\Requests\UpdateAgendamientoRequest;
 use OpenApi\Annotations as OA;
 
 class AgendamientoController extends Controller
 {
-    public function __construct(private readonly AgendamientoService $service)
-    {
-    }
+    public function __construct(private readonly AgendamientoService $service) {}
 
     /**
      * @OA\Get(
@@ -35,12 +34,13 @@ class AgendamientoController extends Controller
      * path="/api/Scheduling_agendamientos/agendamientos",
      * tags={"Agendamientos"},
      * summary="Crear un nuevo agendamiento",
+     * description="Crea un nuevo agendamiento validando conflictos de horario con citas existentes.",
      * security={{"bearerAuth":{}}},
      * @OA\RequestBody(
      * required=true,
      * @OA\JsonContent(
      * @OA\Property(property="cliente_usuario_id", type="integer", example=1),
-     * @OA\Property(property="personal_id", type="integer", example=1),
+     * @OA\Property(property="personal_id", type="integer", nullable=true, example=1),
      * @OA\Property(property="servicio_id", type="integer", example=1),
      * @OA\Property(property="sucursal_id", type="integer", example=1),
      * @OA\Property(property="fecha_hora_inicio", type="string", format="date-time", example="2025-12-25 10:00:00"),
@@ -54,6 +54,14 @@ class AgendamientoController extends Controller
      * response=201,
      * description="Agendamiento creado exitosamente.",
      * @OA\JsonContent(@OA\Property(property="message", type="string", example="Agendamiento creado exitosamente"))
+     * ),
+     * @OA\Response(
+     * response=409,
+     * description="Conflicto de horario",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="El horario seleccionado ya no está disponible."),
+     * @OA\Property(property="error", type="string", example="CONFLICTO_HORARIO")
+     * )
      * ),
      * @OA\Response(response=422, description="Error de validación")
      * )
@@ -75,9 +83,15 @@ class AgendamientoController extends Controller
             $data['notas_internas'] ?? null
         );
 
-        $this->service->save($agendamiento);
-
-        return response()->json(['message' => 'Agendamiento creado exitosamente'], 201);
+        try {
+            $this->service->save($agendamiento);
+            return response()->json(['message' => 'Agendamiento creado exitosamente'], 201);
+        } catch (ConflictHorarioException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'error' => 'CONFLICTO_HORARIO'
+            ], 409);
+        }
     }
 
     /**
@@ -105,6 +119,7 @@ class AgendamientoController extends Controller
      * path="/api/Scheduling_agendamientos/agendamientos/{id}",
      * tags={"Agendamientos"},
      * summary="Actualizar un agendamiento",
+     * description="Actualiza un agendamiento existente validando conflictos de horario.",
      * security={{"bearerAuth":{}}},
      * @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      * @OA\RequestBody(
@@ -115,6 +130,14 @@ class AgendamientoController extends Controller
      * )
      * ),
      * @OA\Response(response=204, description="Agendamiento actualizado"),
+     * @OA\Response(
+     * response=409,
+     * description="Conflicto de horario",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="El horario seleccionado ya no está disponible."),
+     * @OA\Property(property="error", type="string", example="CONFLICTO_HORARIO")
+     * )
+     * ),
      * @OA\Response(response=404, description="Agendamiento no encontrado")
      * )
      */
@@ -140,9 +163,16 @@ class AgendamientoController extends Controller
             $data['notas_cliente'] ?? $existing->notas_cliente,
             $data['notas_internas'] ?? $existing->notas_internas
         );
-        
-        $this->service->update($id, $agendamiento);
-        return response()->json(null, 204);
+
+        try {
+            $this->service->update($id, $agendamiento);
+            return response()->json(null, 204);
+        } catch (ConflictHorarioException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'error' => 'CONFLICTO_HORARIO'
+            ], 409);
+        }
     }
 
     /**

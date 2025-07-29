@@ -17,6 +17,32 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
 
     public function save(Usuario $usuario): Usuario
     {
+        // Si el usuario tiene ID y no es null, es una actualización
+        if ($usuario->id() && $usuario->id()->value() !== null) {
+            $model = $this->model->find($usuario->id()->value());
+
+            if (!$model) {
+                throw new \Exception('Usuario no encontrado para actualizar');
+            }
+
+            // Actualizar los campos del modelo
+            $model->nombre = $usuario->nombre()->value();
+            $model->email = $usuario->email()->value();
+            $model->password = $usuario->password()->value();
+            $model->telefono = $usuario->telefono();
+            $model->rol = $usuario->rol();
+            $model->activo = $usuario->activo();
+            $model->imagen_path = $usuario->imagenPath();
+
+            // Guardar el modelo
+            $model->save();
+
+            // Recargar el modelo para obtener los datos actualizados
+            $model->refresh();
+            return $this->toEntity($model);
+        }
+
+        // Si no tiene ID o es null, es una creación
         $model = $this->model->create([
             'nombre' => $usuario->nombre()->value(),
             'email' => $usuario->email()->value(),
@@ -36,7 +62,7 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
     public function findById(UsuarioId $id): ?Usuario
     {
         $model = $this->model->find($id->value());
-        
+
         if (!$model) {
             return null;
         }
@@ -47,7 +73,7 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
     public function findByEmail(EmailUsuario $email): ?Usuario
     {
         $model = $this->model->where('email', $email->value())->first();
-        
+
         if (!$model) {
             return null;
         }
