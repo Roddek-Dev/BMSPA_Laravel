@@ -794,6 +794,61 @@
                 ]
             }
         },
+        "/api/Admin_personal/usuarios": {
+            "get": {
+                "tags": [
+                    "Personal"
+                ],
+                "summary": "Obtener todos los usuarios para promoción",
+                "operationId": "e8040fdcc0c7cc0aafbadd95fd6831d0",
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuarios disponibles",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "nombre": {
+                                                "type": "string",
+                                                "example": "Juan Pérez"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "juan@example.com"
+                                            },
+                                            "rol": {
+                                                "type": "string",
+                                                "example": "CLIENTE"
+                                            },
+                                            "activo": {
+                                                "type": "boolean",
+                                                "example": true
+                                            },
+                                            "telefono": {
+                                                "type": "string",
+                                                "example": "1234567890"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Admin_personal/usuarios/{usuarioId}/promover-a-empleado": {
             "post": {
                 "tags": [

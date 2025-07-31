@@ -12,9 +12,7 @@ use OpenApi\Annotations as OA;
 
 class PersonalController extends Controller
 {
-    public function __construct(private readonly PersonalService $service)
-    {
-    }
+    public function __construct(private readonly PersonalService $service) {}
 
     /**
      * @OA\Get(
@@ -128,7 +126,7 @@ class PersonalController extends Controller
             $data['fecha_contratacion'] ?? $existing->fecha_contratacion,
             $data['activo_en_empresa'] ?? $existing->activo_en_empresa
         );
-        
+
         $this->service->update($id, $personal);
         return response()->json(null, 204);
     }
@@ -148,5 +146,34 @@ class PersonalController extends Controller
     {
         $this->service->delete($id);
         return response()->json(null, 204);
+    }
+
+    /**
+     * @OA\Get(
+     * path="/api/Admin_personal/usuarios",
+     * tags={"Personal"},
+     * summary="Obtener todos los usuarios para promoción",
+     * security={{"bearerAuth":{}}},
+     * @OA\Response(
+     * response=200,
+     * description="Lista de usuarios disponibles",
+     * @OA\JsonContent(
+     * type="array",
+     * @OA\Items(
+     * @OA\Property(property="id", type="integer", example=1),
+     * @OA\Property(property="nombre", type="string", example="Juan Pérez"),
+     * @OA\Property(property="email", type="string", example="juan@example.com"),
+     * @OA\Property(property="rol", type="string", example="CLIENTE"),
+     * @OA\Property(property="activo", type="boolean", example=true),
+     * @OA\Property(property="telefono", type="string", example="1234567890")
+     * )
+     * )
+     * )
+     * )
+     */
+    public function obtenerUsuarios(): JsonResponse
+    {
+        $usuarios = $this->service->obtenerTodosLosUsuarios();
+        return response()->json($usuarios);
     }
 }

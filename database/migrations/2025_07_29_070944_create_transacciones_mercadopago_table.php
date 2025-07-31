@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transacciones_pago', function (Blueprint $table) {
+        Schema::create('transacciones_mercadopago', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('orden_id');
             $table->string('mercadopago_payment_id');
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transacciones_pago');
+        Schema::dropIfExists('transacciones_mercadopago');
     }
 };

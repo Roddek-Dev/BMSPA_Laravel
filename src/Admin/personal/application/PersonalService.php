@@ -74,4 +74,14 @@ final class PersonalService
             throw $e;
         }
     }
+
+    /**
+     * Obtiene todos los usuarios de la base de datos
+     * 
+     * @return array
+     */
+    public function obtenerTodosLosUsuarios(): array
+    {
+        return $this->repository->obtenerTodosLosUsuarios();
+    }
 }

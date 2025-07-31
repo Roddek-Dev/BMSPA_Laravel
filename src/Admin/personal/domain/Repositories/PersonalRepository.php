@@ -36,4 +36,11 @@ interface PersonalRepository
      * @return bool
      */
     public function usuarioTienePersonal(int $usuarioId): bool;
+
+    /**
+     * Obtiene todos los usuarios de la base de datos
+     * 
+     * @return array
+     */
+    public function obtenerTodosLosUsuarios(): array;
 }

@@ -109,6 +109,15 @@ class EloquentPersonalRepository implements PersonalRepository
         return PersonalModel::where('usuario_id', $usuarioId)->exists();
     }
 
+    public function obtenerTodosLosUsuarios(): array
+    {
+        return UsuarioModel::select('id', 'nombre', 'email', 'rol', 'activo', 'telefono')
+            ->where('activo', true)
+            ->orderBy('nombre')
+            ->get()
+            ->toArray();
+    }
+
     private function toEntity(PersonalModel $model): Personal
     {
         return new Personal(
