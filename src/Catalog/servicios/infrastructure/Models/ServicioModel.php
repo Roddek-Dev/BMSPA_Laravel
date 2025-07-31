@@ -1,33 +1,34 @@
 <?php
 
+// Esta es la ruta correcta que nos dio el error.
 namespace Src\Catalog\servicios\infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+// ¡Importante! Importa el Factory que vamos a crear.
+use Database\Factories\ServicioModelFactory;
 
 class ServicioModel extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $table = 'servicios';
 
+    // Asegúrate de que los campos coincidan con tu tabla
     protected $fillable = [
         'nombre',
         'descripcion',
-        'imagen_path',
-        'precio_base',
-        'duracion_minutos',
+        'duracion_estimada',
+        'precio',
         'categoria_id',
-        'especialidad_requerida_id',
         'activo',
     ];
 
-    protected $casts = [
-        'precio_base' => 'float',
-        'duracion_minutos' => 'integer',
-        'activo' => 'boolean',
-        'categoria_id' => 'integer',
-        'especialidad_requerida_id' => 'integer',
-    ];
+    /**
+     * Le dice a Laravel qué Factory usar.
+     */
+    protected static function newFactory()
+    {
+        return ServicioModelFactory::new();
+    }
 }

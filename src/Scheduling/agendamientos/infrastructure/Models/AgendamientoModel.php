@@ -30,4 +30,16 @@ class AgendamientoModel extends Model
         'fecha_hora_inicio' => 'datetime',
         'fecha_hora_fin' => 'datetime',
     ];
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+
+    protected static function newFactory()
+    {
+        // Le indica a Laravel que use este Factory específico
+        return \Database\Factories\AgendamientoModelFactory::new();    
+    }
 }

@@ -1,10 +1,13 @@
 <?php
 
+// OJO: Asumo que este es el namespace. ¡Cámbialo si es diferente!
 namespace Src\Admin\sucursales\infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+// ¡Importante! Importa el Factory que acabamos de crear.
+use Database\Factories\SucursalModelFactory;
 
 class SucursalModel extends Model
 {
@@ -12,30 +15,26 @@ class SucursalModel extends Model
 
     protected $table = 'sucursales';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    // Asegúrate de que estos campos coincidan con tu tabla
     protected $fillable = [
         'nombre',
-        'imagen_path',
         'telefono_contacto',
         'email_contacto',
         'link_maps',
         'latitud',
         'longitud',
-        'activo',
+    ];
+
+    protected $casts = [
+        'latitud' => 'decimal:7',
+        'longitud' => 'decimal:7',
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * Le dice a Laravel qué Factory usar para este modelo.
      */
-    protected $casts = [
-        'activo' => 'boolean',
-        'latitud' => 'float',
-        'longitud' => 'float',
-    ];
+    protected static function newFactory()
+    {
+        return SucursalModelFactory::new();
+    }
 }

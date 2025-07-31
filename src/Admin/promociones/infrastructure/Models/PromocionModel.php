@@ -39,4 +39,16 @@ class PromocionModel extends Model
         'aplica_a_todos_productos' => 'boolean',
         'aplica_a_todos_servicios' => 'boolean',
     ];
+
+     /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+
+    protected static function newFactory()
+    {
+        // Le indica a Laravel que use este Factory específico
+        return \Src\Admin\promociones\infrastructure\Factories\PromocionModelFactory::new();    
+    }
 }

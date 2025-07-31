@@ -18,12 +18,16 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('imagen_path')->nullable();
-            $table->string('telefono')->nullable()->unique();
-            $table->string('rol', 50)->default('CLIENTE')->comment('Ej: CLIENTE, EMPLEADO. Si es EMPLEADO, tiene un registro en la tabla `personal`');
+            $table->string('telefono', 25)->unique()->nullable();
+            $table->string('rol', 50)->default('CLIENTE');
             $table->boolean('activo')->default(true);
+            $table->unsignedBigInteger('musica_preferencia_navegacion_id')->nullable();
+            $table->unsignedBigInteger('sucursal_preferida_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('musica_preferencia_navegacion_id')->references('id')->on('musica_preferencias_navegacion')->onDelete('set null');
+            $table->foreign('sucursal_preferida_id')->references('id')->on('sucursales')->onDelete('set null');
         });
     }
 

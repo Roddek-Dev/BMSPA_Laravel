@@ -6,21 +6,18 @@ namespace Src\Client\usuarios\infrastructure\Persistence\Eloquent;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
+// ¡IMPORTANTE! Importa el Factory que corresponde a este modelo.
+use Database\Factories\UsuarioModelFactory;
 
-class UsuarioModel extends Authenticatable implements JWTSubject, MustVerifyEmail
+class UsuarioModel extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
     protected $table = 'usuarios';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    // ... (tus fillable, hidden, casts se quedan igual)
     protected $fillable = [
         'nombre',
         'email',
@@ -31,40 +28,21 @@ class UsuarioModel extends Authenticatable implements JWTSubject, MustVerifyEmai
         'imagen_path',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
     ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
+ 
     protected $casts = [
         'activo' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
-
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
+    
+    // ... (tus métodos JWT se quedan igual)
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
 
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
     public function getJWTCustomClaims()
     {
         return [
@@ -72,5 +50,16 @@ class UsuarioModel extends Authenticatable implements JWTSubject, MustVerifyEmai
             'nombre' => $this->nombre,
             'rol' => $this->rol
         ];
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     * Esto le dice a Laravel qué Factory usar para este modelo.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return UsuarioModelFactory::new();
     }
 }

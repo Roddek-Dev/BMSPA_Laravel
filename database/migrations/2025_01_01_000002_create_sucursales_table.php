@@ -12,17 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sucursales', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre', 255);
-            $table->string('imagen_path', 255)->nullable();
-            $table->string('telefono_contacto', 25)->nullable();
-            $table->string('email_contacto', 255)->nullable()->unique();
-            $table->string('link_maps', 512)->nullable();
+            $table->id(); // ID único para la sucursal
+            $table->string('nombre'); // Ej: "Sede Centro"
+            $table->string('telefono_contacto')->nullable();
+            $table->string('email_contacto')->nullable();
+            $table->text('link_maps')->nullable();
             $table->decimal('latitud', 10, 7)->nullable();
             $table->decimal('longitud', 10, 7)->nullable();
             $table->boolean('activo')->default(true);
-            $table->timestamps();
-            $table->softDeletes();
+            $table->timestamps(); // Campos created_at y updated_at
         });
     }
 

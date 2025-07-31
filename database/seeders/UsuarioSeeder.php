@@ -5,17 +5,73 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Src\Client\usuarios\infrastructure\Persistence\Eloquent\UsuarioModel;
 
 class UsuarioSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
+        // 1. Apagamos la revisión de llaves foráneas para poder usar truncate
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        // 2. Vaciamos la tabla de usuarios
         DB::table('usuarios')->truncate();
-        DB::table('usuarios')->insert([
-            ['id' => 1, 'nombre' => 'Ana García', 'email' => 'anagarcia123@gmail.com', 'password' => Hash::make('passwordAna1'), 'telefono' => '5512345678', 'rol' => 'CLIENTE', 'activo' => 1, 'musica_preferencia_navegacion_id' => 2, 'sucursal_preferida_id' => 15],
-            ['id' => 2, 'nombre' => 'Carlos Martínez', 'email' => 'carlosmrtz45@hotmail.com', 'password' => Hash::make('passwordCar2'), 'telefono' => '3321098765', 'rol' => 'CLIENTE', 'activo' => 1, 'musica_preferencia_navegacion_id' => 3, 'sucursal_preferida_id' => 16],
-            ['id' => 3, 'nombre' => 'Sofía López', 'email' => 'sofialpz789@gmail.com', 'password' => Hash::make('passwordSof3'), 'telefono' => '9987654321', 'rol' => 'CLIENTE', 'activo' => 1, 'musica_preferencia_navegacion_id' => 5, 'sucursal_preferida_id' => 18],
-            // ... (añade el resto de usuarios, hasheando sus contraseñas)
-        ]);
+
+        // 3. Volvemos a encender la revisión
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        // 4. Seeder de usuarios con datos del archivo SQL
+        $usuarios = [
+            [
+                'id' => 1,
+                'nombre' => 'Carlos',
+                'email' => 'cr972431@gmail.com',
+                // Este hash corresponde a la contraseña proporcionada en el dump SQL
+                'password' => '$2y$10$89u.F41mF90.w7q/g900..',
+                'telefono' => '3213595990',
+                'rol' => 'ADMIN',
+                'activo' => true,
+                'created_at' => null,
+                'updated_at' => null,
+            ],
+            [
+                'id' => 2,
+                'nombre' => 'Armando Casas',
+                'email' => 'daniel@gmail',
+                'password' => '$2a$10$qhwhIHVKR1nalbxPSk58Eudo21KVEuzGKGmT5BHozj63/Fvh2mDQe',
+                'telefono' => null,
+                'rol' => 'USER',
+                'activo' => true,
+                'created_at' => null,
+                'updated_at' => null,
+            ],
+            [
+                'id' => 3,
+                'nombre' => 'Carlos Rodriguez',
+                'email' => 'cj@gmail',
+                'password' => '$2a$10$n99gCmZNYVoZ5nsmDaY.aOiXWcNPDHIxPuPu6nTCJTYMAEAF/PAsG',
+                'telefono' => '3213595991',
+                'rol' => 'ADMIN',
+                'activo' => true,
+                'created_at' => null,
+                'updated_at' => null,
+            ],
+            [
+                'id' => 4,
+                'nombre' => 'julio jaramillo',
+                'email' => 'jaramillo@gmail',
+                'password' => '$2a$10$D0/B224GEzdFTeB9nEWkJu9o',
+                'telefono' => null,
+                'rol' => 'PERSONAL',
+                'activo' => true,
+                'created_at' => '2025-07-28 09:22:15',
+                'updated_at' => '2025-07-28 09:22:15',
+            ],
+        ];
+
+        DB::table('usuarios')->insert($usuarios);
     }
 }
