@@ -2451,7 +2451,7 @@
                 "tags": [
                     "Órdenes de Cliente"
                 ],
-                "summary": "Crear una nueva orden con sus detalles e iniciar pago con Mercado Pago",
+                "summary": "Crear una nueva orden con sus detalles",
                 "operationId": "f621137a67f7bdba14e453e517564852",
                 "requestBody": {
                     "required": true,
@@ -2487,22 +2487,22 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Orden creada y preferencia de pago generada.",
+                        "description": "Orden creada exitosamente.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Orden creada, pendiente de pago."
+                                            "example": "Orden creada exitosamente."
                                         },
                                         "orden_id": {
                                             "type": "integer",
                                             "example": 123
                                         },
-                                        "preference_id": {
-                                            "type": "string",
-                                            "example": "PREFERENCIA_GENERADA_POR_MP"
+                                        "data": {
+                                            "description": "Datos de la orden creada",
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -2512,6 +2512,28 @@
                     },
                     "422": {
                         "description": "Error de validación."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/Client_ordenes/ordenes/all": {
+            "get": {
+                "tags": [
+                    "Órdenes de Cliente"
+                ],
+                "summary": "Obtener todas las órdenes de todos los usuarios (Solo ADMIN_SUCURSAL y ADMIN_GENERAL)",
+                "operationId": "e162d2d2d71db8da1889f96da9b0ab3b",
+                "responses": {
+                    "200": {
+                        "description": "Lista de todas las órdenes."
+                    },
+                    "403": {
+                        "description": "No autorizado."
                     }
                 },
                 "security": [

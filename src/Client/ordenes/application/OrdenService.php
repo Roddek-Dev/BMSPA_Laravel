@@ -21,6 +21,11 @@ final class OrdenService
         return $this->repository->findAllByClient($clientId);
     }
 
+    public function findAll(): array
+    {
+        return $this->repository->findAll();
+    }
+
     // Modificamos para pasar los detalles al repositorio
     public function save(Orden $orden, array $detalles): Orden
     {

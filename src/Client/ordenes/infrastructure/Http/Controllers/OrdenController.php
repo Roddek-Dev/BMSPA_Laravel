@@ -10,15 +10,13 @@ use Src\Client\ordenes\domain\Entities\Orden;
 use Src\Client\ordenes\infrastructure\Http\Requests\StoreOrdenRequest;
 use Src\Client\ordenes\infrastructure\Http\Requests\UpdateOrdenRequest;
 use Src\Catalog\productos\infrastructure\Models\ProductoModel;
-use Src\Payments\transacciones_pago\application\PagoService;
 use OpenApi\Annotations as OA;
 use Carbon\Carbon;
 
 class OrdenController extends Controller
 {
     public function __construct(
-        private readonly OrdenService $service,
-        private readonly PagoService $pagoService
+        private readonly OrdenService $service
     ) {}
 
     /**
@@ -38,10 +36,30 @@ class OrdenController extends Controller
     }
 
     /**
+     * @OA\Get(
+     * path="/api/Client_ordenes/ordenes/all",
+     * tags={"Órdenes de Cliente"},
+     * summary="Obtener todas las órdenes de todos los usuarios (Solo ADMIN_SUCURSAL y ADMIN_GENERAL)",
+     * security={{"bearerAuth":{}}},
+     * @OA\Response(response=200, description="Lista de todas las órdenes."),
+     * @OA\Response(response=403, description="No autorizado.")
+     * )
+     */
+    public function getAllOrders(Request $request): JsonResponse
+    {
+        $ordenes = $this->service->findAll();
+        return response()->json([
+            'success' => true,
+            'data' => $ordenes,
+            'total' => count($ordenes)
+        ]);
+    }
+
+    /**
      * @OA\Post(
      * path="/api/Client_ordenes/ordenes",
      * tags={"Órdenes de Cliente"},
-     * summary="Crear una nueva orden con sus detalles e iniciar pago con Mercado Pago",
+     * summary="Crear una nueva orden con sus detalles",
      * security={{"bearerAuth":{}}},
      * @OA\RequestBody(
      * required=true,
@@ -55,11 +73,11 @@ class OrdenController extends Controller
      * ),
      * @OA\Response(
      * response=201,
-     * description="Orden creada y preferencia de pago generada.",
+     * description="Orden creada exitosamente.",
      * @OA\JsonContent(
-     * @OA\Property(property="message", type="string", example="Orden creada, pendiente de pago."),
+     * @OA\Property(property="message", type="string", example="Orden creada exitosamente."),
      * @OA\Property(property="orden_id", type="integer", example=123),
-     * @OA\Property(property="preference_id", type="string", example="PREFERENCIA_GENERADA_POR_MP")
+     * @OA\Property(property="data", type="object", description="Datos de la orden creada")
      * )
      * ),
      * @OA\Response(response=422, description="Error de validación.")
@@ -110,27 +128,12 @@ class OrdenController extends Controller
         // 4. Guardar la orden y sus detalles
         $ordenGuardada = $this->service->save($orden, $detallesParaGuardar);
 
-        // 5. Obtener el modelo OrdenModel para Mercado Pago
-        $ordenModel = \Src\Client\ordenes\infrastructure\Models\OrdenModel::with('detalles')->find($ordenGuardada->id);
-
-        // 6. Crear preferencia de pago en Mercado Pago
-        try {
-            $preferenciaPago = $this->pagoService->crearPreferenciaPago($ordenModel);
-
-            return response()->json([
-                'message' => 'Orden creada, pendiente de pago.',
-                'orden_id' => $ordenGuardada->id,
-                'preference_id' => $preferenciaPago['preference_id']
-            ], 201);
-        } catch (\Exception $e) {
-            // Si falla la creación de la preferencia, aún devolvemos la orden creada
-            // pero con un mensaje de advertencia
-            return response()->json([
-                'message' => 'Orden creada pero hubo un problema con el pago. Contacte al administrador.',
-                'orden_id' => $ordenGuardada->id,
-                'error' => 'Error al generar preferencia de pago'
-            ], 201);
-        }
+        // 5. Devolver la orden creada
+        return response()->json([
+            'message' => 'Orden creada exitosamente.',
+            'orden_id' => $ordenGuardada->id,
+            'data' => $ordenGuardada
+        ], 201);
     }
 
     /**
@@ -145,9 +148,9 @@ class OrdenController extends Controller
      * @OA\Response(response=403, description="No autorizado.")
      * )
      */
-    public function show(Request $request, int $id): JsonResponse
+    public function show(Request $request, string $id): JsonResponse
     {
-        $orden = $this->service->findById($id);
+        $orden = $this->service->findById((int) $id);
         if (!$orden || $orden->cliente_usuario_id !== $request->user()->id) {
             return response()->json(['message' => 'Orden no encontrada o no autorizada'], 404);
         }
@@ -171,16 +174,16 @@ class OrdenController extends Controller
      * @OA\Response(response=404, description="Orden no encontrada.")
      * )
      */
-    public function update(UpdateOrdenRequest $request, int $id): JsonResponse
+    public function update(UpdateOrdenRequest $request, string $id): JsonResponse
     {
-        $orden = $this->service->findById($id);
+        $orden = $this->service->findById((int) $id);
         if (!$orden) {
             return response()->json(['message' => 'Orden no encontrada'], 404);
         }
 
         $data = $request->validated();
         $updatedOrden = new Orden(
-            $id,
+            (int) $id,
             $orden->cliente_usuario_id,
             $orden->numero_orden,
             $orden->fecha_orden,
@@ -193,7 +196,7 @@ class OrdenController extends Controller
             $data['notas_orden'] ?? $orden->notas_orden
         );
 
-        $this->service->update($id, $updatedOrden);
+        $this->service->update((int) $id, $updatedOrden);
         return response()->json(null, 204);
     }
 
@@ -208,15 +211,15 @@ class OrdenController extends Controller
      * @OA\Response(response=404, description="Orden no encontrada.")
      * )
      */
-    public function destroy(Request $request, int $id): JsonResponse
+    public function destroy(Request $request, string $id): JsonResponse
     {
-        $orden = $this->service->findById($id);
+        $orden = $this->service->findById((int) $id);
         if (!$orden || $orden->cliente_usuario_id !== $request->user()->id) {
             // Un cliente solo puede cancelar su propia orden.
             return response()->json(['message' => 'Orden no encontrada o no autorizada'], 404);
         }
 
-        $this->service->delete($id);
+        $this->service->delete((int) $id);
         return response()->json(null, 204);
     }
 }

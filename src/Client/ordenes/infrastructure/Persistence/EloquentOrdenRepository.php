@@ -24,6 +24,15 @@ class EloquentOrdenRepository implements OrdenRepository
             ->toArray();
     }
 
+    public function findAll(): array
+    {
+        return OrdenModel::with('detalles')
+            ->orderBy('fecha_orden', 'desc')
+            ->get()
+            ->map(fn($model) => $this->toEntity($model))
+            ->toArray();
+    }
+
     public function save(Orden $orden, array $detalles): Orden
     {
         // Usamos una transacción para asegurar la integridad de los datos
@@ -47,7 +56,7 @@ class EloquentOrdenRepository implements OrdenRepository
     {
         OrdenModel::findOrFail($id)->delete();
     }
-    
+
     private function toEntity(OrdenModel $model): Orden
     {
         return new Orden(
@@ -64,7 +73,7 @@ class EloquentOrdenRepository implements OrdenRepository
             $model->notas_orden
         );
     }
-    
+
     private function toArray(Orden $orden): array
     {
         return [

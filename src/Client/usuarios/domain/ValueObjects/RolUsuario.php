@@ -9,6 +9,7 @@ final class RolUsuario
     public const EMPLEADO = 'EMPLEADO';
     public const ADMIN_GENERAL = 'ADMIN_GENERAL';
     public const ADMIN_SUCURSAL = 'ADMIN_SUCURSAL';
+    public const GERENTE = 'GERENTE';
 
     private string $value;
 
@@ -24,7 +25,8 @@ final class RolUsuario
             self::CLIENTE,
             self::EMPLEADO,
             self::ADMIN_GENERAL,
-            self::ADMIN_SUCURSAL
+            self::ADMIN_SUCURSAL,
+            self::GERENTE
         ];
 
         if (!in_array($value, $validRoles)) {

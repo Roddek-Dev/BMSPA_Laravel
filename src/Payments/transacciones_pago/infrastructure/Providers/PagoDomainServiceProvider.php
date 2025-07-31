@@ -14,7 +14,16 @@ class PagoDomainServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(TransaccionPagoRepository::class, EloquentTransaccionPagoRepository::class);
-        $this->app->bind(PagoService::class, PagoService::class);
+        
+        // Registrar PagoService solo si las credenciales de MercadoPago están configuradas
+        if (config('services.mercadopago.access_token')) {
+            $this->app->bind(PagoService::class, PagoService::class);
+        } else {
+            // Registrar un servicio nulo si no hay configuración
+            $this->app->bind(PagoService::class, function () {
+                return null;
+            });
+        }
     }
 
     public function boot(): void

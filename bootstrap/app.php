@@ -2,23 +2,22 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
-use Illuminate\Foundation\Configuration\Middleware; 
+use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
-        api: __DIR__.'/../routes/api.php', 
+        web: __DIR__ . '/../routes/web.php',
+        commands: __DIR__ . '/../routes/console.php',
+        api: __DIR__ . '/../routes/api.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'role' => \Src\Client\usuarios\infrastructure\Http\Middleware\CheckRole::class,
+            'multiple_roles' => \Src\Client\usuarios\infrastructure\Http\Middleware\CheckMultipleRoles::class,
         ]);
-
     })
-    ->withExceptions(function (Exceptions $exceptions) {
-    })->withProviders([
+    ->withExceptions(function (Exceptions $exceptions) {})->withProviders([
         Src\Client\usuarios\infrastructure\Providers\UsuarioDomainServiceProvider::class,
         Src\Admin\categorias\infrastructure\Providers\CategoriaServiceProvider::class,
         Src\Admin\especialidades\infrastructure\Providers\EspecialidadServiceProvider::class,
@@ -33,5 +32,6 @@ return Application::configure(basePath: dirname(__DIR__))
         Src\Scheduling\horarios_sucursal\infrastructure\Providers\HorarioSucursalServiceProvider::class,
         Src\Admin\personal\infrastructure\Providers\PersonalServiceProvider::class,
         Src\Client\direcciones\infrastructure\Providers\DireccionServiceProvider::class,
+        Src\Payments\transacciones_pago\infrastructure\Providers\PagoDomainServiceProvider::class,
 
     ])->create();
