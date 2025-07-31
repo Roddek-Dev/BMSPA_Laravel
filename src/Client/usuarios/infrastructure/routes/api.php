@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Src\Client\usuarios\infrastructure\Http\Controllers\AuthController;
 use Src\Client\usuarios\infrastructure\Http\Controllers\UserController;
-use Src\Client\usuarios\infrastructure\Http\Controllers\TestRoleController;
 use Src\Client\usuarios\infrastructure\Http\Controllers\OAuthController;
 
 // Rutas de autenticación
