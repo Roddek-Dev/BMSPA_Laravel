@@ -7,6 +7,7 @@ namespace Src\Client\usuarios\infrastructure\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Laravel\Passport\Client;
 use Laravel\Passport\Passport;
 
@@ -26,7 +27,7 @@ class OAuthController
         }
 
         $user = Auth::user();
-        
+
         if (!$user->activo) {
             return response()->json([
                 'message' => 'Cuenta desactivada'
@@ -35,12 +36,12 @@ class OAuthController
 
         // Crear o recuperar el cliente OAuth
         $client = Client::where('password_client', 1)->first();
-        
+
         if (!$client) {
             $client = Passport::client()->forceFill([
                 'user_id' => null,
                 'name' => 'Password Grant Client',
-                'secret' => \Str::random(40),
+                'secret' => Str::random(40),
                 'provider' => 'usuarios',
                 'redirect' => 'http://localhost',
                 'personal_access_client' => false,
@@ -114,7 +115,7 @@ class OAuthController
     public function logout(Request $request): JsonResponse
     {
         $request->user()->token()->revoke();
-        
+
         return response()->json([
             'message' => 'Sesión cerrada exitosamente'
         ]);
@@ -126,4 +127,4 @@ class OAuthController
             'user' => $request->user()
         ]);
     }
-} 
+}
