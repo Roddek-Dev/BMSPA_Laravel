@@ -21,13 +21,9 @@ return new class extends Migration
             $table->string('telefono', 25)->unique()->nullable();
             $table->string('rol', 50)->default('CLIENTE');
             $table->boolean('activo')->default(true);
-            $table->unsignedBigInteger('musica_preferencia_navegacion_id')->nullable();
-            $table->unsignedBigInteger('sucursal_preferida_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('musica_preferencia_navegacion_id')->references('id')->on('musica_preferencias_navegacion')->onDelete('set null');
-            $table->foreign('sucursal_preferida_id')->references('id')->on('sucursales')->onDelete('set null');
         });
     }
 
