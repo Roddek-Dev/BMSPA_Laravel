@@ -3108,6 +3108,66 @@
                 ]
             }
         },
+        "/api/Client_reseñas/reviews/pending": {
+            "get": {
+                "tags": [
+                    "Reseñas (Admin)"
+                ],
+                "summary": "Obtener todas las reseñas pendientes de aprobación (Solo ADMIN_SUCURSAL y GERENTE)",
+                "operationId": "37cbd923a2e8b820d29988af676387fd",
+                "responses": {
+                    "200": {
+                        "description": "Lista de reseñas pendientes de aprobación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "cliente_usuario_id": {
+                                                "type": "integer"
+                                            },
+                                            "reseñable_type": {
+                                                "type": "string"
+                                            },
+                                            "reseñable_id": {
+                                                "type": "integer"
+                                            },
+                                            "calificacion": {
+                                                "type": "integer"
+                                            },
+                                            "comentario": {
+                                                "type": "string",
+                                                "nullable": true
+                                            },
+                                            "aprobada": {
+                                                "type": "boolean"
+                                            },
+                                            "fecha_reseña": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "No autorizado - Solo ADMIN_SUCURSAL y GERENTE"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/Client_usuarios/auth/register": {
             "post": {
                 "tags": [

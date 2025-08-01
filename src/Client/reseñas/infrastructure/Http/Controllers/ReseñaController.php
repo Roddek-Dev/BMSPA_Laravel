@@ -208,6 +208,43 @@ class ReseñaController extends Controller
 
         $this->service->update($reseña->id, $approvedReseña);
 
-        return response()->json(null, 204);
-    }
-}
+                 return response()->json(null, 204);
+     }
+     
+     /**
+      * @OA\Get(
+      * path="/api/Client_reseñas/reviews/pending",
+      * tags={"Reseñas (Admin)"},
+      * summary="Obtener todas las reseñas pendientes de aprobación (Solo ADMIN_SUCURSAL y GERENTE)",
+      * security={{"bearerAuth":{}}},
+      * @OA\Response(
+      * response=200,
+      * description="Lista de reseñas pendientes de aprobación",
+      * @OA\JsonContent(type="array", @OA\Items(
+      * @OA\Property(property="id", type="integer"),
+      * @OA\Property(property="cliente_usuario_id", type="integer"),
+      * @OA\Property(property="reseñable_type", type="string"),
+      * @OA\Property(property="reseñable_id", type="integer"),
+      * @OA\Property(property="calificacion", type="integer"),
+      * @OA\Property(property="comentario", type="string", nullable=true),
+      * @OA\Property(property="aprobada", type="boolean"),
+      * @OA\Property(property="fecha_reseña", type="string", format="date-time")
+      * ))
+      * ),
+      * @OA\Response(response=403, description="No autorizado - Solo ADMIN_SUCURSAL y GERENTE")
+      * )
+      */
+     public function getPendingReviews(Request $request): JsonResponse
+     {
+         // Verificar que el usuario tiene permisos de administrador
+         $user = $request->user();
+         if (!in_array($user->rol, ['ADMIN_SUCURSAL', 'GERENTE'])) {
+             return response()->json([
+                 'message' => 'No tienes permisos para ver reseñas pendientes de aprobación'
+             ], 403);
+         }
+         
+         $reseñas = $this->service->findAllPendingApproval();
+         return response()->json($reseñas);
+     }
+ }

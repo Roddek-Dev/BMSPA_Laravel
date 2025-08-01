@@ -17,5 +17,6 @@ Route::middleware(['auth:api'])->group(function () {
 
 // Ruta de Moderación para Administradores (requiere rol específico)
 Route::middleware(['auth:api', 'multiple_roles:GERENTE,ADMIN_SUCURSAL'])->group(function () {
+    Route::get('reviews/pending', [ReseñaController::class, 'getPendingReviews']);
     Route::put('reviews/{reseña}/aprobar', [ReseñaController::class, 'approve']);
 });

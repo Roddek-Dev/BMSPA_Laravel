@@ -13,4 +13,6 @@ interface ReseñaRepository
     public function delete(int $id): void;
     // NUEVO MÉTODO
     public function findAllApprovedByItem(string $itemType, int $itemId): array;
+    // NUEVO MÉTODO PARA ADMIN
+    public function findAllPendingApproval(): array;
 }

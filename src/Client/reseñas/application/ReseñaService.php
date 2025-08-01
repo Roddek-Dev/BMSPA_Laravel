@@ -46,4 +46,10 @@ final class ReseñaService
     {
         return $this->repository->findAllApprovedByItem($itemType, $itemId);
     }
+    
+    // NUEVO MÉTODO PARA ADMIN
+    public function findAllPendingApproval(): array
+    {
+        return $this->repository->findAllPendingApproval();
+    }
 }

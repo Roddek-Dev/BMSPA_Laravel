@@ -22,12 +22,23 @@ class EloquentReseñaRepository implements ReseñaRepository
             ->toArray();
     }
 
-     // NUEVA IMPLEMENTACIÓN
-     public function findAllApprovedByItem(string $itemType, int $itemId): array
+          // NUEVA IMPLEMENTACIÓN
+      public function findAllApprovedByItem(string $itemType, int $itemId): array
+      {
+          return ReseñaModel::where('reseñable_type', $itemType)
+              ->where('reseñable_id', $itemId)
+              ->where('aprobada', true) // Solo las aprobadas
+              ->get()
+              ->map(fn($model) => $this->toEntity($model))
+              ->toArray();
+      }
+     
+     // NUEVA IMPLEMENTACIÓN PARA ADMIN
+     public function findAllPendingApproval(): array
      {
-         return ReseñaModel::where('reseñable_type', $itemType)
-             ->where('reseñable_id', $itemId)
-             ->where('aprobada', true) // Solo las aprobadas
+         return ReseñaModel::where('aprobada', false) // Solo las pendientes de aprobación
+             ->with(['reseñable']) // Cargar la relación para obtener detalles del item reseñado
+             ->orderBy('fecha_reseña', 'desc') // Ordenar por fecha más reciente
              ->get()
              ->map(fn($model) => $this->toEntity($model))
              ->toArray();
